@@ -1,5 +1,6 @@
 import { LitElement, customElement, html, css, query, state } from "lit-element";
 import { Engine } from "@templatone/kreslo";
+import { WebFonts as WebFontUtils, WeightType as FontWeightType } from "@templatone/utils/dist/WebFonts.js";
 import {
     ITemplateData as IData,
     ITemplateConfig as IConfig,
@@ -7,8 +8,6 @@ import {
     TemplateControllerEvent as ControllerEvent,
     TemplateSceneEvent as SceneEvent,
 } from "./index.js";
-
-import WebFont from 'webfontloader';
 
 
 
@@ -190,38 +189,20 @@ export abstract class TemplateScene<DATA> extends LitElement {
 
         const fontCssPath = `${this.storePath}/fonts.css`;
 
-        if (!window.WebFont) throw new Error("window.WebFont is undefined. Please load this file first.");
 
-        const familyBundles: {
-            name: string,
-            fonts: any[],
-        }[] = [];
-
-
-        for (let i = 0; i < config.assets.fonts.length; i++) {
-            const font = config.assets.fonts[i];
-            const family = familyBundles.find(fml => fml.name == font.family);
-
-            if (family) {
-                family.fonts.push(font);
-            } else {
-                familyBundles.push({
-                    name: font.family,
-                    fonts: [font]
-                })
+        const familyDescriptions = WebFontUtils.convertFacesToFamilies(config.assets.fonts.map(f => {
+            return {
+                family: f.family,
+                path: f.filename,
+                style: f.italic ? 'italic' : 'normal',
+                weight: f.weight as FontWeightType,
             }
-        }
+        }));
 
-        const families = familyBundles.map(fml => {
-            const fvds = fml.fonts.map(f => WebFontLoader.getFvd(
-                f.italic ? 'italic' : 'normal',
-                f.weight as WebFontWeight
-            ));
 
-            return WebFontLoader.getFamily(fml.name, fvds);
-        });
+        const families = familyDescriptions.map(f => WebFontUtils.computeFamilyQuery(f.family, f.variations));
 
-        const webConfig: WebFontLoaderConfig = {
+        const webFontConfig: WebFont.Config = {
             classes: false,
             timeout: 30 * 1000,
             custom: {
@@ -230,7 +211,7 @@ export abstract class TemplateScene<DATA> extends LitElement {
             },
         };
 
-        await WebFontLoader.load(webConfig);
+        await WebFontUtils.load(webFontConfig);
     }
 
 

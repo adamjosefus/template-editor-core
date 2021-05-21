@@ -12,3 +12,4 @@ interface IConfig__v1_0_0 {
         }[]
     }
 }
+

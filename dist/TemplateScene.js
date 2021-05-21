@@ -10,6 +10,7 @@ var __decorate = (decorators, target, key, kind) => {
   return result;
 };
 import {LitElement, state} from "./web-modules/pkg/lit-element.js";
+import {WebFonts as WebFontUtils} from "./web-modules/pkg/@templatone/utils/dist/WebFonts.js";
 import {
   TemplateEditorEvent as EditorEvent,
   TemplateControllerEvent as ControllerEvent,
@@ -122,26 +123,16 @@ export class TemplateScene extends LitElement {
     if (!config.assets.fonts)
       return;
     const fontCssPath = `${this.storePath}/fonts.css`;
-    if (!window.WebFont)
-      throw new Error("window.WebFont is undefined. Please load this file first.");
-    const familyBundles = [];
-    for (let i = 0; i < config.assets.fonts.length; i++) {
-      const font = config.assets.fonts[i];
-      const family = familyBundles.find((fml) => fml.name == font.family);
-      if (family) {
-        family.fonts.push(font);
-      } else {
-        familyBundles.push({
-          name: font.family,
-          fonts: [font]
-        });
-      }
-    }
-    const families = familyBundles.map((fml) => {
-      const fvds = fml.fonts.map((f) => WebFontLoader.getFvd(f.italic ? "italic" : "normal", f.weight));
-      return WebFontLoader.getFamily(fml.name, fvds);
-    });
-    const webConfig = {
+    const familyDescriptions = WebFontUtils.convertFacesToFamilies(config.assets.fonts.map((f) => {
+      return {
+        family: f.family,
+        path: f.filename,
+        style: f.italic ? "italic" : "normal",
+        weight: f.weight
+      };
+    }));
+    const families = familyDescriptions.map((f) => WebFontUtils.computeFamilyQuery(f.family, f.variations));
+    const webFontConfig = {
       classes: false,
       timeout: 30 * 1e3,
       custom: {
@@ -149,7 +140,7 @@ export class TemplateScene extends LitElement {
         urls: [fontCssPath]
       }
     };
-    await WebFontLoader.load(webConfig);
+    await WebFontUtils.load(webFontConfig);
   }
   isReady() {
     return this._isReadyToggle;

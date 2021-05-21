@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@templatone/kreslo": "^3.7.0",
+    "@templatone/utils": "^1.1.0",
     "@types/webfontloader": "^1.6.32",
     "lit": "*",
     "webfontloader": "^1.6.28"
