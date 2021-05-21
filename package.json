@@ -1,0 +1,16 @@
+{
+  "name": "template-editor-core",
+  "version": "1.0.0-alpha",
+  "description": "",
+  "main": "template-editor-core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam Josefus",
+  "license": "ISC",
+  "dependencies": {
+    "@templatone/components": "^1.1.4-alpha",
+    "@templatone/kreslo": "^3.7.0",
+    "lit-html": "^1.4.0"
+  }
+}

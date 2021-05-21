@@ -1,4 +1,4 @@
-import { Color, Fill, IRenderingLayer, IRenderable, RectangleShape } from "../../../node_modules/@templatone/kreslo/kreslo.js";
+import { Color, Fill, IRenderingLayer, IRenderable, RectangleShape } from "../node_modules/@templatone/kreslo/kreslo.js";
 import { IResizable } from "./IResizable.js";
 
 

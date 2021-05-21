@@ -1,4 +1,4 @@
-import { CustomElement } from "../CustomElement.js";
+import { CustomElement } from "../components/components.js";
 import { WebFontLoader, WebFontLoaderConfig, weight as WebFontWeight } from "../utils/WebFontLoader.js";
 
 import {

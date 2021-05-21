@@ -1,8 +1,6 @@
-import { Engine } from "../../node_modules/@templatone/kreslo/kreslo.js";
-import { html, TemplateResult } from "../../node_modules/lit-html/lit-html.js";
-import { CustomElement } from "../CustomElement.js";
-import { PointerMovementObserver } from "../PointerMovementObserver.js";
-import { WebFontLoader, WebFontLoaderConfig, weight as WebFontWeight } from "../utils/WebFontLoader.js";
+import { Engine } from "./node_modules/@templatone/kreslo/kreslo.js";
+import { html, TemplateResult } from "./node_modules/lit-html/lit-html.js";
+import { CustomElement } from "./node_modules/@templatone/components/components.js";
 
 import {
     ITemplateData as IData,
@@ -39,20 +37,6 @@ export class TemplateStage extends CustomElement {
         this._container = container;
         this._canvas = canvas;
         this._engine = engine;
-
-        this._transformFeedback = new TransformFeedback(0, 0);
-
-        const observer = new PointerMovementObserver(entries => {
-            entries.forEach(entry => {
-                const movementX = entry.movementX;
-                const movementY = entry.movementY;
-                
-                this._transformFeedback.position.add(movementX, movementY)
-            })
-        });
-
-        observer.observe(canvas);
-
 
         this._engine.loop.addUpdateCallback(() => this._render());
         this._engine.loop.start();

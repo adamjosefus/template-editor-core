@@ -1,4 +1,4 @@
-import { Color, Fill, RectangleShape } from "../../../node_modules/@templatone/kreslo/kreslo.js";
+import { Color, Fill, RectangleShape } from "../node_modules/@templatone/kreslo/kreslo.js";
 export class BootingScreen {
     constructor(width, height) {
         this.width = 0;

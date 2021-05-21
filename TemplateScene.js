@@ -1,4 +1,4 @@
-import { CustomElement } from "../CustomElement.js";
+import { CustomElement } from "../components/components.js";
 import { WebFontLoader } from "../utils/WebFontLoader.js";
 import { TemplateEditorEvent as EditorEvent, TemplateControllerEvent as ControllerEvent, TemplateSceneEvent as SceneEvent, } from "./index.js";
 export class TemplateScene extends CustomElement {
