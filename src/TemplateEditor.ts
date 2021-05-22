@@ -2,7 +2,7 @@ import { customElement, html, css, LitElement, property } from "lit-element";
 import {
     TemplateEditorEvent as EditorEvent,
     TemplateControllerEvent as ControllerEvent,
-} from "./index.js";
+} from "./main.js";
 
 
 customElement('template-editor')

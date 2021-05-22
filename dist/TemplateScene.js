@@ -11,11 +11,10 @@ var __decorate = (decorators, target, key, kind) => {
 };
 import {LitElement, state} from "./web-modules/pkg/lit-element.js";
 import {WebFonts as WebFontUtils} from "./web-modules/pkg/@templatone/utils/dist/WebFonts.js";
-import {
-  TemplateEditorEvent as EditorEvent,
-  TemplateControllerEvent as ControllerEvent,
-  TemplateSceneEvent as SceneEvent
-} from "./index.js";
+import {TemplateControllerEvent as ControllerEvent} from "./TemplateControllerEvent.js";
+import {TemplateEditorEvent as EditorEvent} from "./TemplateEditorEvent.js";
+import {updateConfig} from "./Config.js";
+import {TemplateSceneEvent as SceneEvent} from "./TemplateSceneEvent.js";
 export class TemplateScene extends LitElement {
   constructor(width, height, getOutputFileName) {
     super();
@@ -116,7 +115,7 @@ export class TemplateScene extends LitElement {
     const path = `${this.storePath}/config.json`;
     const response = await fetch(path);
     const data = await response.json();
-    this._config = data;
+    this._config = updateConfig(data);
   }
   async _loadFonts() {
     const config = this.getConfig();

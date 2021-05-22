@@ -13,7 +13,7 @@ import {customElement, html, css, LitElement, property} from "./web-modules/pkg/
 import {
   TemplateEditorEvent as EditorEvent,
   TemplateControllerEvent as ControllerEvent
-} from "./index.js";
+} from "./main.js";
 customElement("template-editor");
 export class TemplateEditor extends LitElement {
   constructor() {

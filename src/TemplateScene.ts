@@ -1,13 +1,9 @@
 import { LitElement, customElement, html, css, query, state } from "lit-element";
-import { Engine } from "@templatone/kreslo";
 import { WebFonts as WebFontUtils, WeightType as FontWeightType } from "@templatone/utils/dist/WebFonts.js";
-import {
-    ITemplateData as IData,
-    ITemplateConfig as IConfig,
-    TemplateEditorEvent as EditorEvent,
-    TemplateControllerEvent as ControllerEvent,
-    TemplateSceneEvent as SceneEvent,
-} from "./index.js";
+import { TemplateControllerEvent as ControllerEvent } from "./TemplateControllerEvent.js";
+import { TemplateEditorEvent as EditorEvent } from "./TemplateEditorEvent.js";
+import { updateConfig, ConfigType } from "./Config.js";
+import { TemplateSceneEvent as SceneEvent } from "./TemplateSceneEvent.js";
 
 
 
@@ -139,8 +135,8 @@ export abstract class TemplateScene<DATA> extends LitElement {
 
 
     // Config
-    private _config: IConfig | null = null;
-    getConfig(): IConfig {
+    private _config: ConfigType | null = null;
+    getConfig(): ConfigType {
         if (this._config == null) throw new Error("Config has not been set yet.");
         return this._config;
     }
@@ -178,7 +174,7 @@ export abstract class TemplateScene<DATA> extends LitElement {
         const response = await fetch(path);
         const data = await response.json();
 
-        this._config = data as IConfig;
+        this._config = updateConfig(data);
     }
 
 
@@ -237,8 +233,6 @@ export abstract class TemplateScene<DATA> extends LitElement {
 
 
     // Methods
-
-
     getExportDependencies(): {
         outputName: string,
         canvas: HTMLCanvasElement,

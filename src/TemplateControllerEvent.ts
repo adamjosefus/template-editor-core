@@ -1,4 +1,4 @@
-import { ITemplateData } from "./index.js";
+import { ITemplateData } from "./main.js";
 
 
 const enum EVENT_TYPE {

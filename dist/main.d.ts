@@ -1,5 +1,5 @@
 export { ITemplateData } from "./ITemplateData.js";
-export { ITemplateConfig } from "./ITemplateConfig.js";
+export { ConfigType as TemplateConfigType } from "./Config.js";
 export { TemplateController } from "./TemplateController.js";
 export { TemplateControllerEvent } from "./TemplateControllerEvent.js";
 export { TemplateScene } from "./TemplateScene.js";

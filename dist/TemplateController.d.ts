@@ -1,5 +1,5 @@
 import { LitElement } from "lit-element";
-import { ITemplateData as IData } from "./index.js";
+import { ITemplateData as IData } from "./main.js";
 export declare abstract class TemplateController<DATA extends IData> extends LitElement {
     readonly data: DATA;
     constructor(defaultData: DATA);

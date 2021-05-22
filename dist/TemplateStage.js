@@ -13,7 +13,7 @@ import {LitElement, customElement, html, css, query} from "./web-modules/pkg/lit
 import {Engine} from "./web-modules/pkg/@templatone/kreslo.js";
 import {
   TemplateSceneEvent as SceneEvent
-} from "./index.js";
+} from "./main.js";
 export let TemplateStage = class extends LitElement {
   constructor() {
     super();

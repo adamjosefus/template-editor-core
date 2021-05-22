@@ -2,11 +2,11 @@ import { LitElement, customElement, html, css, query } from "lit-element";
 import { Engine } from "@templatone/kreslo";
 import {
     ITemplateData as IData,
-    ITemplateConfig as IConfig,
+    TemplateConfigType as IConfig,
     TemplateEditorEvent as EditorEvent,
     TemplateControllerEvent as ControllerEvent,
     TemplateSceneEvent as SceneEvent,
-} from "./index.js";
+} from "./main.js";
 
 
 

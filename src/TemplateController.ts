@@ -4,7 +4,7 @@ import {
     ITemplateData as IData,
     TemplateControllerEvent as ControllerEvent,
     TemplateSceneEvent as SceneEvent
-} from "./index.js";
+} from "./main.js";
 
 
 export abstract class TemplateController<DATA extends IData> extends LitElement {

@@ -1638,4 +1638,4 @@ var Utils;
     Utils.Strings = Strings;
 })(Utils || (Utils = {}));
 
-export { Color, Engine, Fill, RectangleShape, Shadow, Stroke, Transform, Utils, Vector };
+export { Color, Engine, Fill, RectangleShape };

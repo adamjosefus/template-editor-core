@@ -1,4 +1,4 @@
-import { ITemplateData } from "./index.js";
+import { ITemplateData } from "./main.js";
 declare const enum EVENT_TYPE {
     READY = "templateEditor-controller-ready",
     DATA_UPDATE = "templateEditor-controller-dataUpdate"

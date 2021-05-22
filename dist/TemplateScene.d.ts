@@ -1,5 +1,5 @@
 import { LitElement } from "lit-element";
-import { ITemplateConfig as IConfig } from "./index.js";
+import { ConfigType } from "./Config.js";
 export declare abstract class TemplateScene<DATA> extends LitElement {
     private _storePath;
     get storePath(): string;
@@ -31,7 +31,7 @@ export declare abstract class TemplateScene<DATA> extends LitElement {
      */
     isDataUpdatedFromLastGet(): boolean;
     private _config;
-    getConfig(): IConfig;
+    getConfig(): ConfigType;
     init(): Promise<void>;
     private _isLoadedToggle;
     isLoaded(): boolean;
