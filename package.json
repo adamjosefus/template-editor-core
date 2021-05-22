@@ -1,14 +1,14 @@
 {
-  "name": "@templatone/template-editore-core",
+  "name": "@templatone/template-editor-core",
   "version": "1.0.0-alpha",
   "description": "Templatone core of editor template.",
-  "homepage": "https://github.com/templatone/template-editore-core#readme",
+  "homepage": "https://github.com/templatone/template-editor-core#readme",
   "bugs": {
-    "url": "https://github.com/templatone/template-editore-core/issues"
+    "url": "https://github.com/templatone/template-editor-core/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/templatone/template-editore-core.git"
+    "url": "git+https://github.com/templatone/template-editor-core.git"
   },
   "license": "CC-BY-NC-ND-4.0",
   "author": "Adam Josefus",
