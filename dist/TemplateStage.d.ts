@@ -1,4 +1,4 @@
-import { LitElement } from "lit-element";
+import { LitElement } from 'lit';
 export declare class TemplateStage extends LitElement {
     private _container;
     private _canvas;
@@ -11,5 +11,5 @@ export declare class TemplateStage extends LitElement {
     private _updateSize;
     private _render;
     render(): import("lit-html").TemplateResult<1>;
-    static styles: import("lit-element").CSSResultGroup;
+    static styles: import("lit").CSSResultGroup;
 }

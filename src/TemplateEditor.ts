@@ -1,4 +1,5 @@
-import { customElement, html, css, LitElement, property } from "lit-element";
+import {html, css, LitElement} from 'lit';
+import {customElement, property, state, query} from 'lit/decorators.js'
 import {
     TemplateEditorEvent as EditorEvent,
     TemplateControllerEvent as ControllerEvent,

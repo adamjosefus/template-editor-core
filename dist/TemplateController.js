@@ -1,4 +1,4 @@
-import {LitElement} from "./web-modules/pkg/lit-element.js";
+import {LitElement} from "./web-modules/pkg/lit.js";
 import {
   TemplateControllerEvent as ControllerEvent,
   TemplateSceneEvent as SceneEvent

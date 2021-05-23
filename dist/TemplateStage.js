@@ -9,7 +9,8 @@ var __decorate = (decorators, target, key, kind) => {
     __defProp(target, key, result);
   return result;
 };
-import {LitElement, customElement, html, css, query} from "./web-modules/pkg/lit-element.js";
+import {html, css, LitElement} from "./web-modules/pkg/lit.js";
+import {customElement, query} from "./web-modules/pkg/lit/decorators.js";
 import {Engine} from "./web-modules/pkg/@templatone/kreslo.js";
 import {
   TemplateSceneEvent as SceneEvent

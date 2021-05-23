@@ -1,6 +1,6 @@
 {
   "name": "@templatone/template-editor-core",
-  "version": "1.0.0-alpha",
+  "version": "1.0.1-alpha",
   "description": "Templatone core of editor template.",
   "homepage": "https://github.com/templatone/template-editor-core#readme",
   "bugs": {
@@ -18,6 +18,13 @@
     "dev": "snowpack build --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "@templatone/kreslo": "^3.7.0",
+    "@templatone/utils": "^1.1.0",
+    "@types/webfontloader": "^1.6.32",
+    "lit": "2.0.0-rc.2",
+    "webfontloader": "^1.6.28"
+  },
   "devDependencies": {
     "@snowpack/plugin-typescript": "^1.2.1",
     "snowpack": "^3.3.5",
@@ -25,12 +32,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@templatone/kreslo": "^3.7.0",
-    "@templatone/utils": "^1.1.0",
-    "@types/webfontloader": "^1.6.32",
-    "lit": "*",
-    "webfontloader": "^1.6.28"
   }
 }

@@ -9,7 +9,8 @@ var __decorate = (decorators, target, key, kind) => {
     __defProp(target, key, result);
   return result;
 };
-import {LitElement, state} from "./web-modules/pkg/lit-element.js";
+import {LitElement} from "./web-modules/pkg/lit.js";
+import {state} from "./web-modules/pkg/lit/decorators.js";
 import {WebFonts as WebFontUtils} from "./web-modules/pkg/@templatone/utils/dist/WebFonts.js";
 import {TemplateControllerEvent as ControllerEvent} from "./TemplateControllerEvent.js";
 import {TemplateEditorEvent as EditorEvent} from "./TemplateEditorEvent.js";
