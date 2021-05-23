@@ -1,6 +1,6 @@
 {
   "name": "@templatone/template-editor-core",
-  "version": "1.0.1-alpha",
+  "version": "1.0.2-alpha",
   "description": "Templatone core of editor template.",
   "homepage": "https://github.com/templatone/template-editor-core#readme",
   "bugs": {
