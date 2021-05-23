@@ -1,4 +1,5 @@
-import { LitElement, customElement, html, css, query } from "lit-element";
+import {html, css, LitElement} from 'lit';
+import {customElement, property, state, query} from 'lit/decorators.js'
 import { Engine } from "@templatone/kreslo";
 import {
     ITemplateData as IData,

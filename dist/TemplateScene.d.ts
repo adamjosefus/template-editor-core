@@ -1,4 +1,4 @@
-import { LitElement } from "lit-element";
+import { LitElement } from 'lit';
 import { ConfigType } from "./Config.js";
 export declare abstract class TemplateScene<DATA> extends LitElement {
     private _storePath;

@@ -1,4 +1,4 @@
-import { LitElement } from "lit-element";
+import { LitElement } from 'lit';
 export declare class TemplateEditor extends LitElement {
     controllerValid: boolean;
     connectedCallback(): void;
@@ -6,5 +6,5 @@ export declare class TemplateEditor extends LitElement {
     private _onControllerDataUpdate;
     fireExportRequest(): void;
     render(): import("lit-html").TemplateResult<1>;
-    static style: import("lit-element").CSSResultGroup;
+    static style: import("lit").CSSResultGroup;
 }
