@@ -1,7 +1,7 @@
 import {html, css, LitElement} from 'lit';
 import {customElement, property, state, query} from 'lit/decorators.js'
-import { TemplateEditorEvent as EditorEvent } from "./TemplateEditorEvent.js"
-import { TemplateControllerEvent as ControllerEvent } from "./TemplateControllerEvent.js"
+import { TemplateEditorEvent as EditorEvent } from "./TemplateEditorEvent"
+import { TemplateControllerEvent as ControllerEvent } from "./TemplateControllerEvent"
 
 
 customElement('template-editor')

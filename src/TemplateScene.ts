@@ -1,10 +1,10 @@
 import {html, css, LitElement} from 'lit';
 import {customElement, property, state, query} from 'lit/decorators.js'
 import { WebFonts as WebFontUtils, WeightType as FontWeightType } from "@templatone/utils/dist/WebFonts.js";
-import { TemplateControllerEvent as ControllerEvent } from "./TemplateControllerEvent.js";
-import { TemplateEditorEvent as EditorEvent } from "./TemplateEditorEvent.js";
-import { updateConfig, ConfigType } from "./Config.js";
-import { TemplateSceneEvent as SceneEvent } from "./TemplateSceneEvent.js";
+import { TemplateControllerEvent as ControllerEvent } from "./TemplateControllerEvent";
+import { TemplateEditorEvent as EditorEvent } from "./TemplateEditorEvent";
+import { updateConfig, ConfigType } from "./Config";
+import { TemplateSceneEvent as SceneEvent } from "./TemplateSceneEvent";
 
 
 export abstract class TemplateScene<DATA> extends LitElement {

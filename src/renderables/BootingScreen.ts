@@ -1,5 +1,5 @@
 import { Color, Fill, IRenderingLayer, IRenderable, RectangleShape } from "@templatone/kreslo";
-import { IResizable } from "./IResizable.js";
+import { IResizable } from "./IResizable";
 
 
 export class BootingScreen implements IRenderable, IResizable {

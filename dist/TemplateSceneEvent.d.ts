@@ -1,4 +1,4 @@
-import { TemplateScene } from "./TemplateScene.js";
+import { TemplateScene } from "./TemplateScene";
 declare const enum EVENT_TYPE {
     READY = "template-scene-ready",
     LOAD = "template-scene-load",

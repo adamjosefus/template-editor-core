@@ -1,8 +1,6 @@
 import {LitElement} from "./web-modules/pkg/lit.js";
-import {
-  TemplateControllerEvent as ControllerEvent,
-  TemplateSceneEvent as SceneEvent
-} from "./main.js";
+import {TemplateControllerEvent as ControllerEvent} from "./TemplateControllerEvent.js";
+import {TemplateSceneEvent as SceneEvent} from "./TemplateSceneEvent.js";
 export class TemplateController extends LitElement {
   constructor(defaultData) {
     super();

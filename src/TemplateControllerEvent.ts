@@ -1,11 +1,9 @@
-import { ITemplateData } from "./ITemplateData.js";
-
-
 const enum EVENT_TYPE {
     READY = 'templateEditor-controller-ready',
     DATA_UPDATE = 'templateEditor-controller-dataUpdate',
 }
 
+import { ITemplateData } from "./ITemplateData";
 
 export class TemplateControllerEvent<CONTROLLER_DATA extends ITemplateData> extends CustomEvent<{
     data: CONTROLLER_DATA,

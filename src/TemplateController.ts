@@ -1,14 +1,10 @@
 import {html, css, LitElement} from 'lit';
 import {customElement, property, state, query} from 'lit/decorators.js'
+import { TemplateControllerEvent as ControllerEvent, } from './TemplateControllerEvent';
+import { TemplateSceneEvent as SceneEvent } from './TemplateSceneEvent';
+import { ITemplateData } from "./ITemplateData";
 
-import {
-    ITemplateData as IData,
-    TemplateControllerEvent as ControllerEvent,
-    TemplateSceneEvent as SceneEvent
-} from "./main.js";
-
-
-export abstract class TemplateController<DATA extends IData> extends LitElement {
+export abstract class TemplateController<DATA extends ITemplateData> extends LitElement {
 
     readonly data: DATA;
 

@@ -1,14 +1,13 @@
-export { ITemplateData } from "./ITemplateData";
-export { ConfigType as TemplateConfigType } from "./Config.js";
+export { ConfigType as TemplateConfigType } from "./Config";
 
-export { TemplateController } from "./TemplateController.js";
-export { TemplateControllerEvent } from "./TemplateControllerEvent.js";
+export { TemplateController } from "./TemplateController";
+export { TemplateControllerEvent } from "./TemplateControllerEvent";
 
-export { TemplateScene } from "./TemplateScene.js";
-export { TemplateSceneEvent } from "./TemplateSceneEvent.js";
+export { TemplateScene } from "./TemplateScene";
+export { TemplateSceneEvent } from "./TemplateSceneEvent";
 
-export { TemplateEditor } from "./TemplateEditor.js";
-export { TemplateEditorEvent } from "./TemplateEditorEvent.js";
+export { TemplateEditor } from "./TemplateEditor";
+export { TemplateEditorEvent } from "./TemplateEditorEvent";
 
 export const enum TagNames {
     'Controller' = 'template-controller',

@@ -1,5 +1,5 @@
 import { IRenderingLayer, IRenderable } from "@templatone/kreslo";
-import { IResizable } from "./IResizable.js";
+import { IResizable } from "./IResizable";
 export declare class BootingScreen implements IRenderable, IResizable {
     width: number;
     height: number;
