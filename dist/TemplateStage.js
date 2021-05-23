@@ -12,9 +12,7 @@ var __decorate = (decorators, target, key, kind) => {
 import {html, css, LitElement} from "./web-modules/pkg/lit.js";
 import {customElement, query} from "./web-modules/pkg/lit/decorators.js";
 import {Engine} from "./web-modules/pkg/@templatone/kreslo.js";
-import {
-  TemplateSceneEvent as SceneEvent
-} from "./main.js";
+import {TemplateSceneEvent as SceneEvent} from "./TemplateSceneEvent.js";
 export let TemplateStage = class extends LitElement {
   constructor() {
     super();
