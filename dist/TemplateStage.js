@@ -61,7 +61,7 @@ export let TemplateStage = class extends LitElement {
                 <div class="overlay">
                     <canvas></canvas>
                 </div>
-
+            
                 <div class="scene">
                     <slot name="scene"></slot>
                 </div>

@@ -1,8 +1,7 @@
-import {html, css, LitElement} from 'lit';
-import {customElement, property, state, query} from 'lit/decorators.js'
+import { html, css, LitElement } from 'lit';
+import { customElement, property, state, query } from 'lit/decorators.js'
 import { Engine } from "@templatone/kreslo";
-import { TemplateSceneEvent as SceneEvent } from "./TemplateSceneEvent.js"
-
+import { TemplateSceneEvent as SceneEvent } from "./TemplateSceneEvent"
 
 
 @customElement('template-stage')
@@ -87,7 +86,7 @@ export class TemplateStage extends LitElement {
                 <div class="overlay">
                     <canvas></canvas>
                 </div>
-
+            
                 <div class="scene">
                     <slot name="scene"></slot>
                 </div>
