@@ -11,10 +11,8 @@ var __decorate = (decorators, target, key, kind) => {
 };
 import {html, css, LitElement} from "./web-modules/pkg/lit.js";
 import {customElement, property} from "./web-modules/pkg/lit/decorators.js";
-import {
-  TemplateEditorEvent as EditorEvent,
-  TemplateControllerEvent as ControllerEvent
-} from "./main.js";
+import {TemplateEditorEvent as EditorEvent} from "./TemplateEditorEvent.js";
+import {TemplateControllerEvent as ControllerEvent} from "./TemplateControllerEvent.js";
 customElement("template-editor");
 export class TemplateEditor extends LitElement {
   constructor() {

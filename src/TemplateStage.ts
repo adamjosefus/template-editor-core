@@ -1,13 +1,7 @@
 import {html, css, LitElement} from 'lit';
 import {customElement, property, state, query} from 'lit/decorators.js'
 import { Engine } from "@templatone/kreslo";
-import {
-    ITemplateData as IData,
-    TemplateConfigType as IConfig,
-    TemplateEditorEvent as EditorEvent,
-    TemplateControllerEvent as ControllerEvent,
-    TemplateSceneEvent as SceneEvent,
-} from "./main.js";
+import { TemplateSceneEvent as SceneEvent } from "./TemplateSceneEvent.js"
 
 
 

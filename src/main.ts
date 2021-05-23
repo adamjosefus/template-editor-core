@@ -1,4 +1,4 @@
-export { ITemplateData } from "./ITemplateData.js";
+export { ITemplateData } from "./ITemplateData";
 export { ConfigType as TemplateConfigType } from "./Config.js";
 
 export { TemplateController } from "./TemplateController.js";
