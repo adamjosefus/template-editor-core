@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-export declare class TemplateEditor extends LitElement {
+export declare class EditorElement extends LitElement {
     controllerValid: boolean;
     connectedCallback(): void;
     disconnectedCallback(): void;

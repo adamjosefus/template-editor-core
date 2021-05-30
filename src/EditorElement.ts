@@ -1,58 +1,65 @@
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __decorate = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
-  for (var i = decorators.length - 1, decorator; i >= 0; i--)
-    if (decorator = decorators[i])
-      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result)
-    __defProp(target, key, result);
-  return result;
-};
-import {html, css, LitElement} from "./web-modules/pkg/lit.js";
-import {customElement, property} from "./web-modules/pkg/lit/decorators.js";
-import {TemplateEditorEvent as EditorEvent} from "./TemplateEditorEvent.js";
-import {TemplateControllerEvent as ControllerEvent} from "./TemplateControllerEvent.js";
-customElement("template-editor");
-export class TemplateEditor extends LitElement {
-  constructor() {
-    super(...arguments);
-    this.controllerValid = false;
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    window.addEventListener(ControllerEvent.DATA_UPDATE, (e) => {
-      const event = e;
-      this._onControllerDataUpdate(event);
-    });
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-  }
-  _onControllerDataUpdate(e) {
-    this.controllerValid = e.detail.valid;
-  }
-  fireExportRequest() {
-    const event = new EditorEvent(EditorEvent.EXPORT_REQUEST);
-    window.dispatchEvent(event);
-  }
-  render() {
-    return html`
-            <li>Controller: ${this.controllerValid ? "Valid" : "Invalid"}</li>
+import { html, css, LitElement } from 'lit';
+import { customElement, property, state, query } from 'lit/decorators.js'
+import { EditorEvent } from "./EditorEvent.js";
+import { ControllerEvent } from "./ControllerEvent.js";
+import { TagNames } from './main.js';
 
+
+customElement(TagNames.Editor)
+export class EditorElement extends LitElement {
+
+    @property({ type: Boolean })
+    controllerValid: boolean = false;
+
+
+    connectedCallback() {
+        super.connectedCallback();
+
+
+        window.addEventListener(ControllerEvent.DataUpdate, (e: Event) => {
+            const event = e as ControllerEvent<any>;
+
+            this._onControllerDataUpdate(event);
+        });
+    }
+
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+
+        // TODO: remove listeners
+    }
+
+
+    private _onControllerDataUpdate(e: ControllerEvent<any>): void {
+        this.controllerValid = e.detail.valid;
+    }
+
+
+    fireExportRequest() {
+        const event = new EditorEvent(EditorEvent.ExportRequest);
+        window.dispatchEvent(event);
+    }
+
+
+    render() {
+        return html`
+            <li>Controller: ${this.controllerValid ? "Valid" : "Invalid"}</li>
+            
             <div class="layout">
                 <div class="controller">
                     <slot name="controller"></slot>
                 </div>
-
+            
                 <div class="scene" appearance="darkmode">
                     <div class="scene-content">
                         <template-stage>
                             <slot slot="scene" name="scene"></slot>
                         </template-stage>
-
+            
                         <div class="scene-toolbar">
-                            <ui-button .disabled=${this.controllerValid === false || this.controllerValid === void 0} @click="${() => this.fireExportRequest()}">
+                            <ui-button .disabled=${this.controllerValid===false || this.controllerValid===undefined}
+                                @click="${() => this.fireExportRequest()}">
                                 <ui-icon slot="icon" glyph="image"></ui-icon>
                                 <span>Exportovat</span>
                             </ui-button>
@@ -61,9 +68,9 @@ export class TemplateEditor extends LitElement {
                 </div>
             </div>
         `;
-  }
-}
-TemplateEditor.style = css`
+    }
+
+    static style = css`
         :host {
             display: block;
         }
@@ -116,6 +123,4 @@ TemplateEditor.style = css`
             overflow: hidden;
         }
     `;
-__decorate([
-  property({type: Boolean})
-], TemplateEditor.prototype, "controllerValid", 2);
+}

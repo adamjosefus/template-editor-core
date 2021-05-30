@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-export declare class TemplateStage extends LitElement {
+export declare class StageElement extends LitElement {
     private _container;
     private _canvas;
     private _engine;
