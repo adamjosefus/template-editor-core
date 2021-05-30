@@ -1,3 +1,4 @@
+export type { IData as ITemplateData } from "./IData.js";
 export type { ConfigType as TemplateConfigType } from "./ConfigType.js";
 export { EditorElement as TemplateEditorElement } from "./EditorElement.js";
 export { ControllerElement as TemplateControllerElement } from "./ControllerElement.js";
