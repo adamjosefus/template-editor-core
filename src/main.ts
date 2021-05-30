@@ -1,4 +1,4 @@
-export { ConfigType as TemplateConfigType } from "./Config";
+export type { ConfigType as TemplateConfigType } from "./Config";
 
 export { TemplateController } from "./TemplateController";
 export { TemplateControllerEvent } from "./TemplateControllerEvent";

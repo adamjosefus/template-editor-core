@@ -1,6 +1,7 @@
 import {html, css, LitElement} from 'lit';
 import {customElement, property, state, query} from 'lit/decorators.js'
-import { WebFonts as WebFontUtils, WeightType as FontWeightType } from "@templatone/utils/dist/WebFonts.js";
+import { WebFonts as WebFontUtils } from "@templatone/utils";
+import type { WeightType as FontWeightType } from "@templatone/utils/lib/WebFonts.js";
 import { TemplateControllerEvent as ControllerEvent } from "./TemplateControllerEvent";
 import { TemplateEditorEvent as EditorEvent } from "./TemplateEditorEvent";
 import { updateConfig, ConfigType } from "./Config";
