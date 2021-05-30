@@ -1,14 +1,15 @@
-import {html, css, LitElement} from 'lit';
-import {customElement, property, state, query} from 'lit/decorators.js'
+import { html, css, LitElement } from 'lit';
+import { customElement, property, state, query } from 'lit/decorators.js'
 import { WebFonts as WebFontUtils } from "@templatone/utils";
 import type { WeightType as FontWeightType } from "@templatone/utils/lib/WebFonts.js";
-import { TemplateControllerEvent as ControllerEvent } from "./TemplateControllerEvent";
-import { TemplateEditorEvent as EditorEvent } from "./TemplateEditorEvent";
-import { updateConfig, ConfigType } from "./Config";
-import { TemplateSceneEvent as SceneEvent } from "./TemplateSceneEvent";
+import { ControllerEvent } from "./ControllerEvent.js";
+import { EditorEvent } from "./EditorEvent.js";
+import { updateConfig } from "./ConfigType.js";
+import type { ConfigType } from "./ConfigType.js";
+import { SceneEvent } from "./SceneEvent.js";
 
 
-export abstract class TemplateScene<DATA> extends LitElement {
+export abstract class SceneElement<DATA> extends LitElement {
 
     private _storePath: string | null = null;
     get storePath(): string {
@@ -25,17 +26,17 @@ export abstract class TemplateScene<DATA> extends LitElement {
         this._getOutputFileNameCallback = getOutputFileName;
 
         // Init
-        window.addEventListener(ControllerEvent.READY, (e: Event) => {
+        window.addEventListener(ControllerEvent.Ready, (e: Event) => {
             const evnt = e as ControllerEvent<DATA>;
             this._fireReadyEvent();
         }, { once: true });
 
-        window.addEventListener(ControllerEvent.DATA_UPDATE, (e: Event) => {
+        window.addEventListener(ControllerEvent.DataUpdate, (e: Event) => {
             const evnt = e as ControllerEvent<DATA>;
             this._onControllerUpdate(evnt);
         });
 
-        window.addEventListener(EditorEvent.EXPORT_REQUEST, (e: Event) => {
+        window.addEventListener(EditorEvent.ExportRequest, (e: Event) => {
             const evnt = e as EditorEvent;
             this._onEditorExportRequest(evnt);
         });
@@ -279,19 +280,19 @@ export abstract class TemplateScene<DATA> extends LitElement {
 
 
     private _fireReadyEvent(): void {
-        const event = new SceneEvent(SceneEvent.READY, this)
+        const event = new SceneEvent(SceneEvent.Ready, this)
         this._fireEvent(event);
     }
 
 
     private _fireSourceLoadEvent(): void {
-        const event = new SceneEvent(SceneEvent.LOAD, this)
+        const event = new SceneEvent(SceneEvent.Load, this)
         this._fireEvent(event);
     }
 
 
     private _fireResizeReadyEvent(): void {
-        const event = new SceneEvent(SceneEvent.RESIZE, this)
+        const event = new SceneEvent(SceneEvent.Resize, this)
         this._fireEvent(event);
     }
 

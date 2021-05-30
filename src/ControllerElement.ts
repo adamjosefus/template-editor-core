@@ -1,16 +1,17 @@
-import {html, css, LitElement} from 'lit';
-import {customElement, property, state, query} from 'lit/decorators.js'
-import { TemplateControllerEvent as ControllerEvent, } from './TemplateControllerEvent';
-import { TemplateSceneEvent as SceneEvent } from './TemplateSceneEvent';
-import { ITemplateData } from "./ITemplateData";
+import { html, css, LitElement } from 'lit';
+import { customElement, property, state, query } from 'lit/decorators.js'
+import { ControllerEvent } from './ControllerEvent.js';
+import { SceneEvent } from './SceneEvent.js';
+import type { IData } from "./IData.js";
 
-export abstract class TemplateController<DATA extends ITemplateData> extends LitElement {
+
+export abstract class ControllerElement<DATA extends IData> extends LitElement {
 
     readonly data: DATA;
 
     constructor(defaultData: DATA) {
         super();
-        
+
         // Data
         this.data = defaultData;
     }
@@ -19,7 +20,7 @@ export abstract class TemplateController<DATA extends ITemplateData> extends Lit
     connectedCallback() {
         super.connectedCallback();
 
-        window.addEventListener(SceneEvent.READY, (e: Event) => {
+        window.addEventListener(SceneEvent.Ready, (e: Event) => {
             const event = e as SceneEvent<DATA>;
             this._isSceneReady = true;
 
@@ -29,11 +30,10 @@ export abstract class TemplateController<DATA extends ITemplateData> extends Lit
         }, { once: true });
 
     }
-   
-   
+
+
     disconnectedCallback() {
         super.disconnectedCallback();
-
         // TODO: remove listeners
     }
 
@@ -82,13 +82,13 @@ export abstract class TemplateController<DATA extends ITemplateData> extends Lit
 
 
     private _fireReadyEvent() {
-        const event = new ControllerEvent(ControllerEvent.READY, this.data, this.isValid(this.data))
+        const event = new ControllerEvent(ControllerEvent.Ready, this.data, this.isValid(this.data))
         this._fireEvent(event);
     }
 
 
     fireDataUpdateEvent() {
-        const event = new ControllerEvent(ControllerEvent.DATA_UPDATE, this.data, this.isValid(this.data))
+        const event = new ControllerEvent(ControllerEvent.DataUpdate, this.data, this.isValid(this.data))
         this._fireEvent(event);
     }
 }
