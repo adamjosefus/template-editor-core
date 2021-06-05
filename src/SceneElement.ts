@@ -3,7 +3,6 @@ import { customElement, property, state, query } from 'lit/decorators.js'
 import { WebFonts as WebFontUtils } from "@templatone/utils";
 import type { WeightType as FontWeightType } from "@templatone/utils/lib/WebFonts.js";
 import { ControllerEvent } from "./ControllerEvent.js";
-import { EditorEvent } from "./EditorEvent.js";
 import { updateConfig } from "./ConfigType.js";
 import type { ConfigType } from "./ConfigType.js";
 import { SceneEvent } from "./SceneEvent.js";
@@ -34,11 +33,6 @@ export abstract class SceneElement<DATA> extends LitElement {
         window.addEventListener(ControllerEvent.DataUpdate, (e: Event) => {
             const evnt = e as ControllerEvent<DATA>;
             this._onControllerUpdate(evnt);
-        });
-
-        window.addEventListener(EditorEvent.ExportRequest, (e: Event) => {
-            const evnt = e as EditorEvent;
-            this._onEditorExportRequest(evnt);
         });
 
         this.init();
@@ -264,11 +258,6 @@ export abstract class SceneElement<DATA> extends LitElement {
     // Callbacks
     private _onControllerUpdate(e: ControllerEvent<DATA>) {
         this._updateData(e.detail.data, e.detail.valid);
-    }
-
-
-    private _onEditorExportRequest(e: EditorEvent): void {
-        this.export();
     }
 
 

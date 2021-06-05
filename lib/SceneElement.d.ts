@@ -49,7 +49,6 @@ export declare abstract class SceneElement<DATA> extends LitElement {
     export(): void;
     private _downloadImages;
     private _onControllerUpdate;
-    private _onEditorExportRequest;
     private _fireEvent;
     private _fireReadyEvent;
     private _fireSourceLoadEvent;
