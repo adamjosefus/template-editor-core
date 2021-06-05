@@ -9,8 +9,6 @@ export { EditorEvent as TemplateEditorEvent } from "./EditorEvent.js";
 export { ControllerEvent as TemplateControllerEvent } from "./ControllerEvent.js";
 export { SceneEvent as TemplateSceneEvent } from "./SceneEvent.js";
 
-export const enum TagNames {
-    'Editor' = 'template-editor',
-    'Controller' = 'template-controller',
-    'Scene' = 'template-scene',
-}
+export const EditorTagName = "template-editor";
+export const ControllerTagName = "template-controller";
+export const SceneTagName = "template-scene";

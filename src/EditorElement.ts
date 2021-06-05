@@ -2,10 +2,10 @@ import { html, css, LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js'
 import { EditorEvent } from "./EditorEvent.js";
 import { ControllerEvent } from "./ControllerEvent.js";
-import { TagNames } from './main.js';
+import { EditorTagName } from './main.js';
 
 
-customElement(TagNames.Editor)
+customElement(EditorTagName)
 export class EditorElement extends LitElement {
 
     @property({ type: Boolean })
