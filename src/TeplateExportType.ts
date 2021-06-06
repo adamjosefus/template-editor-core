@@ -1,6 +1,6 @@
 export type TeplateExportType = {
     items: Array<{
-        name: string
-        format: 'jpg' | 'png'
+        filename: string,
+        dataURL: string,
     }>
 }
