@@ -6,6 +6,8 @@ import { ControllerEvent } from "./ControllerEvent.js";
 import { updateConfig } from "./ConfigType.js";
 import type { ConfigType } from "./ConfigType.js";
 import { SceneEvent } from "./SceneEvent.js";
+import { EditorEvent } from './EditorEvent.js';
+import type { TeplateExportType } from './TeplateExportType.js';
 
 
 export abstract class SceneElement<DATA> extends LitElement {
@@ -17,12 +19,11 @@ export abstract class SceneElement<DATA> extends LitElement {
     }
 
 
-    constructor(width: number | { (): number }, height: number | { (): number }, getOutputFileName: { (): string }) {
+    constructor(width: number | { (): number }, height: number | { (): number }) {
         super();
 
         this._getWidthCallback = typeof width === 'number' ? (() => width) : width;
         this._getHeightCallback = typeof height === 'number' ? (() => height) : height;
-        this._getOutputFileNameCallback = getOutputFileName;
 
         // Init
         window.addEventListener(ControllerEvent.Ready, (e: Event) => {
@@ -33,6 +34,11 @@ export abstract class SceneElement<DATA> extends LitElement {
         window.addEventListener(ControllerEvent.DataUpdate, (e: Event) => {
             const evnt = e as ControllerEvent<DATA>;
             this._onControllerUpdate(evnt);
+        });
+
+        window.addEventListener(EditorEvent.ExportRequest, (e: Event) => {
+            const evnt = e as EditorEvent;
+            this._onEditorExportRequest(evnt);
         });
 
         this.init();
@@ -77,14 +83,6 @@ export abstract class SceneElement<DATA> extends LitElement {
         }
 
         return value;
-    }
-
-
-    // Export
-    private _getOutputFileNameCallback: { (): string }
-
-    getOutputFilename(): string {
-        return this._getOutputFileNameCallback();
     }
 
 
@@ -221,43 +219,53 @@ export abstract class SceneElement<DATA> extends LitElement {
     }
 
 
-
+    /**
+     * @override
+     */
     async startup(): Promise<void> {
         throw new Error(`${this.tagName}: Method 'startup' is not defined.`);
     }
 
 
     // Methods
-    getExportDependencies(): {
-        outputName: string,
-        canvas: HTMLCanvasElement,
-    } {
-        throw new Error(`${this.tagName}: Method 'getCanvases' is not defined.`);
+    // getExportDependencies(): {
+    //     outputName: string,
+    //     canvas: HTMLCanvasElement,
+    // } {
+    //     throw new Error(`${this.tagName}: Method 'getCanvases' is not defined.`);
+    // }
+
+
+    /**
+     * @override
+     */
+    async getExport(): Promise<TeplateExportType> {
+        throw new Error(`${this.tagName}: Method 'getExport' is not defined.`);
     }
 
 
-    export() {
-        this._downloadImages();
-    }
+    // private _downloadImages() {
+    //     const dependencies = this.getExportDependencies();
+
+    //     const filename = `${dependencies.outputName}.png`;
+    //     const url = dependencies.canvas.toDataURL('image/png');
+
+    //     const anchor = document.createElement('a');
+    //     anchor.href = url;
+    //     anchor.download = filename;
+
+    //     anchor.click();
+    // }
 
 
-    private _downloadImages() {
-        const dependencies = this.getExportDependencies();
-
-        const filename = `${dependencies.outputName}.png`;
-        const url = dependencies.canvas.toDataURL('image/png');
-
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = filename;
-
-        anchor.click();
-    }
-
-
-    // Callbacks
+    // Handlers
     private _onControllerUpdate(e: ControllerEvent<DATA>) {
         this._updateData(e.detail.data, e.detail.valid);
+    }
+
+
+    private _onEditorExportRequest(e: EditorEvent) {
+        this._fireExportEvent();
     }
 
 
@@ -282,6 +290,12 @@ export abstract class SceneElement<DATA> extends LitElement {
 
     private _fireResizeReadyEvent(): void {
         const event = new SceneEvent(SceneEvent.Resize, this)
+        this._fireEvent(event);
+    }
+
+
+    private _fireExportEvent(): void {
+        const event = new SceneEvent(SceneEvent.Export, this)
         this._fireEvent(event);
     }
 

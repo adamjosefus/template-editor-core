@@ -7,8 +7,8 @@ export declare class ControllerEvent<ControllerDataType extends IData> extends C
     data: ControllerDataType;
     valid: boolean;
 }> {
-    static Ready: ControllerEventType;
-    static DataUpdate: ControllerEventType;
+    static readonly Ready = ControllerEventType.Ready;
+    static readonly DataUpdate = ControllerEventType.DataUpdate;
     constructor(typeArg: ControllerEventType, data: ControllerDataType, valid: boolean);
 }
 export {};

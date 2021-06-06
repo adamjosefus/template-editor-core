@@ -1,5 +1,6 @@
 import { LitElement } from 'lit';
 import type { ConfigType } from "./ConfigType.js";
+import type { TeplateExportType } from './TeplateExportType.js';
 export declare abstract class SceneElement<DATA> extends LitElement {
     private _storePath;
     get storePath(): string;
@@ -7,8 +8,6 @@ export declare abstract class SceneElement<DATA> extends LitElement {
         (): number;
     }, height: number | {
         (): number;
-    }, getOutputFileName: {
-        (): string;
     });
     private _lastWidth;
     private _lastHeight;
@@ -16,8 +15,6 @@ export declare abstract class SceneElement<DATA> extends LitElement {
     private _getHeightCallback?;
     getWidth(): number;
     getHeight(): number;
-    private _getOutputFileNameCallback;
-    getOutputFilename(): string;
     private _data;
     private isDataUpdatedToggle;
     private isDataValidToggle;
@@ -41,16 +38,19 @@ export declare abstract class SceneElement<DATA> extends LitElement {
     private _isReadyToggle;
     isReady(): boolean;
     private _startup;
+    /**
+     * @override
+     */
     startup(): Promise<void>;
-    getExportDependencies(): {
-        outputName: string;
-        canvas: HTMLCanvasElement;
-    };
-    export(): void;
-    private _downloadImages;
+    /**
+     * @override
+     */
+    getExport(): Promise<TeplateExportType>;
     private _onControllerUpdate;
+    private _onEditorExportRequest;
     private _fireEvent;
     private _fireReadyEvent;
     private _fireSourceLoadEvent;
     private _fireResizeReadyEvent;
+    private _fireExportEvent;
 }
