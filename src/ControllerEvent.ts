@@ -12,8 +12,8 @@ export class ControllerEvent<ControllerDataType extends IData> extends CustomEve
     valid: boolean,
 }> {
 
-    static Ready = ControllerEventType.Ready;
-    static DataUpdate = ControllerEventType.DataUpdate;
+    static readonly Ready = ControllerEventType.Ready;
+    static readonly DataUpdate = ControllerEventType.DataUpdate;
 
     constructor(typeArg: ControllerEventType, data: ControllerDataType, valid: boolean) {
         super(typeArg, {
