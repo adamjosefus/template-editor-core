@@ -1,6 +1,6 @@
 import { LitElement } from 'lit';
 import type { ConfigType } from "./ConfigType.js";
-import type { TeplateExportType } from './TeplateExportType.js';
+import type { ExportDataType } from './ExportDataType.js';
 export declare abstract class SceneElement<DATA> extends LitElement {
     private _storePath;
     get storePath(): string;
@@ -45,7 +45,7 @@ export declare abstract class SceneElement<DATA> extends LitElement {
     /**
      * @override
      */
-    getExport(): Promise<TeplateExportType>;
+    getExportData(): Promise<ExportDataType>;
     private _onControllerUpdate;
     private _onEditorExportRequest;
     private _fireEvent;

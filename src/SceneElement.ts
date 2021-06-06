@@ -7,7 +7,7 @@ import { updateConfig } from "./ConfigType.js";
 import type { ConfigType } from "./ConfigType.js";
 import { SceneEvent } from "./SceneEvent.js";
 import { EditorEvent } from './EditorEvent.js';
-import type { TeplateExportType } from './TeplateExportType.js';
+import type { ExportDataType } from './ExportDataType.js';
 
 
 export abstract class SceneElement<DATA> extends LitElement {
@@ -239,8 +239,8 @@ export abstract class SceneElement<DATA> extends LitElement {
     /**
      * @override
      */
-    async getExport(): Promise<TeplateExportType> {
-        throw new Error(`${this.tagName}: Method 'getExport' is not defined.`);
+    async getExportData(): Promise<ExportDataType> {
+        throw new Error(`${this.tagName}: Method 'ExportDataType' is not defined.`);
     }
 
 
