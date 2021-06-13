@@ -1,7 +1,9 @@
 export declare function updateConfig(data: any): ConfigType;
 export declare type ConfigType = ConfigType_v1;
-interface ConfigType_v1 extends ConfigType_Origin {
-    version: '1';
+interface ConfigType_v1 extends ConfigType_Common {
+    configType: 1;
+    main: string;
+    preview?: string;
     assets: {
         fonts?: {
             family: string;
@@ -11,7 +13,7 @@ interface ConfigType_v1 extends ConfigType_Origin {
         }[];
     };
 }
-interface ConfigType_Origin {
-    version: string;
+interface ConfigType_Common {
+    configType: number;
 }
 export {};
