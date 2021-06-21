@@ -4,7 +4,7 @@ import type { IData } from "./IData.js";
 const enum ControllerEventType {
     Ready = 'templateEditor-controller-ready',
     DataUpdate = 'templateEditor-controller-dataUpdate',
-    GetLink = 'templateEditor-controller-getLink',
+    ShareData = 'templateEditor-controller-shareData',
 }
 
 
@@ -15,7 +15,7 @@ export class ControllerEvent<ControllerDataType extends IData> extends CustomEve
 
     static readonly Ready = ControllerEventType.Ready;
     static readonly DataUpdate = ControllerEventType.DataUpdate;
-    static readonly GetLink = ControllerEventType.GetLink;
+    static readonly ShareData = ControllerEventType.ShareData;
 
     constructor(typeArg: ControllerEventType, data: ControllerDataType, valid: boolean) {
         super(typeArg, {
