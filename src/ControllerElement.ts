@@ -31,9 +31,9 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
         }, { once: true });
 
 
-        window.addEventListener(EditorEvent.GetLinkRequest, (e: Event) => {
+        window.addEventListener(EditorEvent.ShareDataRequest, (e: Event) => {
             const evnt = e as EditorEvent;
-            this._onEditorGetLinkRequest(evnt);
+            this._onShareDataRequest(evnt);
         });
 
     }
@@ -80,8 +80,8 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
     }
 
 
-    private _onEditorGetLinkRequest(e: EditorEvent) {
-        this._fireGetLinkEvent();
+    private _onShareDataRequest(e: EditorEvent) {
+        this._fireShareDataEvent();
     }
 
     // Events
@@ -102,8 +102,8 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
         this._fireEvent(event);
     }
 
-    protected _fireGetLinkEvent() {
-        const event = new ControllerEvent(ControllerEvent.GetLink, this.data, this.isValid(this.data))
+    protected _fireShareDataEvent() {
+        const event = new ControllerEvent(ControllerEvent.ShareData, this.data, this.isValid(this.data))
         this._fireEvent(event);
     }
 }
