@@ -13,8 +13,9 @@ export declare abstract class ControllerElement<DATA extends IData> extends LitE
     private _startup;
     startup(): Promise<void>;
     isValid(data: DATA): boolean;
-    private _fireEvent;
-    private _fireReadyEvent;
-    private _fireDataUpdateEvent;
     private _onEditorGetLinkRequest;
+    private _fireEvent;
+    protected _fireReadyEvent(): void;
+    protected _fireDataUpdateEvent(): void;
+    protected _fireGetLinkEvent(): void;
 }

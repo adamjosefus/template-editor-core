@@ -80,6 +80,10 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
     }
 
 
+    private _onEditorGetLinkRequest(e: EditorEvent) {
+        this._fireGetLinkEvent();
+    }
+
     // Events
     private _fireEvent(event: ControllerEvent<DATA>): void {
         this.dispatchEvent(event);
@@ -87,19 +91,18 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
     }
 
 
-    private _fireReadyEvent() {
+    protected _fireReadyEvent() {
         const event = new ControllerEvent(ControllerEvent.Ready, this.data, this.isValid(this.data))
         this._fireEvent(event);
     }
 
 
-    private _fireDataUpdateEvent() {
+    protected _fireDataUpdateEvent() {
         const event = new ControllerEvent(ControllerEvent.DataUpdate, this.data, this.isValid(this.data))
         this._fireEvent(event);
     }
 
-
-    private _onEditorGetLinkRequest(e: EditorEvent) {
+    protected _fireGetLinkEvent() {
         const event = new ControllerEvent(ControllerEvent.GetLink, this.data, this.isValid(this.data))
         this._fireEvent(event);
     }
