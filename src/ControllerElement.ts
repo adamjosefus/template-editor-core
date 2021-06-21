@@ -3,6 +3,7 @@ import { customElement, property, state, query } from 'lit/decorators.js'
 import { ControllerEvent } from './ControllerEvent.js';
 import { SceneEvent } from './SceneEvent.js';
 import type { IData } from "./IData.js";
+import { EditorEvent } from './EditorEvent.js';
 
 
 export abstract class ControllerElement<DATA extends IData> extends LitElement {
@@ -25,9 +26,15 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
             this._isSceneReady = true;
 
             if (this._isControllerReady && this._isSceneReady) {
-                this.fireDataUpdateEvent();
+                this._fireDataUpdateEvent();
             }
         }, { once: true });
+
+
+        window.addEventListener(EditorEvent.GetLinkRequest, (e: Event) => {
+            const evnt = e as EditorEvent;
+            this._onEditorGetLinkRequest(evnt);
+        });
 
     }
 
@@ -41,7 +48,6 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
     firstUpdated() {
         this.init();
     }
-
 
 
     private _isSceneReady: boolean = false;
@@ -87,8 +93,14 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
     }
 
 
-    fireDataUpdateEvent() {
+    private _fireDataUpdateEvent() {
         const event = new ControllerEvent(ControllerEvent.DataUpdate, this.data, this.isValid(this.data))
+        this._fireEvent(event);
+    }
+
+
+    private _onEditorGetLinkRequest(e: EditorEvent) {
+        const event = new ControllerEvent(ControllerEvent.GetLink, this.data, this.isValid(this.data))
         this._fireEvent(event);
     }
 }

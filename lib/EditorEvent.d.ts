@@ -1,10 +1,10 @@
 declare const enum EventType {
     ExportRequest = "templateEditor-exportRequest",
-    GetEditorLinkRequest = "templateEditor-getEditorLink"
+    GetLinkRequest = "templateEditor-getLink"
 }
 export declare class EditorEvent extends CustomEvent<undefined> {
     static ExportRequest: EventType;
-    static GetEditorLinkRequest: EventType;
+    static GetLinkRequest: EventType;
     constructor(typeArg: EventType);
 }
 export {};
