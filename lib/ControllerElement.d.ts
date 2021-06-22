@@ -16,7 +16,6 @@ export declare abstract class ControllerElement<DATA extends IData> extends LitE
     isSame(data: DATA): boolean;
     private _onSnapshotDataRequest;
     private _fireEvent;
-    private _createEvent;
     protected _fireReadyEvent(): void;
     protected _fireDataUpdateEvent(): void;
     protected _fireSnapshotDataEvent(): void;

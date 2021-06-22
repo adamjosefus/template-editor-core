@@ -95,30 +95,21 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
         window.dispatchEvent(event);
     }
 
-    private _createEvent(typeArg: ControllerEventType): ControllerEvent<DATA> {
-        const valid = this.isValid(this.data);
-        // const changed = 
-
-        // this.
-
-        return new ControllerEvent(typeArg, this.data, valid, cahnged);
-    }
-
 
     protected _fireReadyEvent() {
-        const event = this._createEvent(ControllerEvent.Ready);
+        const event = new ControllerEvent(ControllerEvent.Ready, this.data, this.isValid(this.data));
         this._fireEvent(event);
     }
 
 
     protected _fireDataUpdateEvent() {
-        const event = this._createEvent(ControllerEvent.DataUpdate);
+        const event = new ControllerEvent(ControllerEvent.DataUpdate, this.data, this.isValid(this.data));
         this._fireEvent(event);
     }
 
 
     protected _fireSnapshotDataEvent() {
-        const event = this._createEvent(ControllerEvent.SnapshotData);
+        const event = new ControllerEvent(ControllerEvent.SnapshotData, this.data, this.isValid(this.data));
         this._fireEvent(event);
     }
 }
