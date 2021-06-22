@@ -6,11 +6,11 @@ import type { IData } from "./IData.js";
 import { EditorEvent } from './EditorEvent.js';
 
 
-export abstract class ControllerElement<DATA extends IData> extends LitElement {
+export abstract class ControllerElement<D extends IData> extends LitElement {
 
-    readonly data: DATA;
+    data: D;
 
-    constructor(defaultData: DATA) {
+    constructor(defaultData: D) {
         super();
 
         // Data
@@ -22,7 +22,7 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
         super.connectedCallback();
 
         window.addEventListener(SceneEvent.Ready, (e: Event) => {
-            const event = e as SceneEvent<DATA>;
+            const event = e as SceneEvent<D>;
             this._isSceneReady = true;
 
             if (this._isControllerReady && this._isSceneReady) {
@@ -32,8 +32,14 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
 
 
         window.addEventListener(EditorEvent.SnapshotDataRequest, (e: Event) => {
-            const evnt = e as EditorEvent;
+            const evnt = e as EditorEvent<D>;
             this._onSnapshotDataRequest(evnt);
+        });
+
+
+        window.addEventListener(EditorEvent.SnapshotData, (e: Event) => {
+            const evnt = e as EditorEvent<D>;
+            this._onSnapshotData(evnt);
         });
 
     }
@@ -51,7 +57,10 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
 
 
     private _isSceneReady: boolean = false;
+
     private _isControllerReady: boolean = false;
+
+
     isReady(): boolean {
         return this._isControllerReady;
     }
@@ -75,36 +84,48 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
     }
 
 
-    isValid(data: DATA): boolean {
+    isValid(data: D): boolean {
         throw new Error(`${this.tagName}: method isValid is not defined.`);
     }
 
+    isValidStructure(data: D): boolean {
+        throw new Error(`${this.tagName}: method isValidStructure is not defined.`);
+    }
 
-    private _onSnapshotDataRequest(e: EditorEvent) {
+
+    private _onSnapshotDataRequest(e: EditorEvent<D>) {
         this._fireSnapshotDataEvent();
     }
 
+
+    private _onSnapshotData(e: EditorEvent<D>) {
+        if (e.detail.data !== null && this.isValidStructure(e.detail.data)) {     
+            this.data = e.detail.data;
+            this._fireDataUpdateEvent();
+        }
+    }
+
     // Events
-    private _fireEvent(event: ControllerEvent<DATA>): void {
+    private _fireEvent(event: ControllerEvent<D>): void {
         this.dispatchEvent(event);
         window.dispatchEvent(event);
     }
 
 
     protected _fireReadyEvent() {
-        const event = new ControllerEvent(ControllerEvent.Ready, this.data, this.isValid(this.data))
+        const event = new ControllerEvent(ControllerEvent.Ready, this.data, this.isValid(this.data));
         this._fireEvent(event);
     }
 
 
     protected _fireDataUpdateEvent() {
-        const event = new ControllerEvent(ControllerEvent.DataUpdate, this.data, this.isValid(this.data))
+        const event = new ControllerEvent(ControllerEvent.DataUpdate, this.data, this.isValid(this.data));
         this._fireEvent(event);
     }
 
 
     protected _fireSnapshotDataEvent() {
-        const event = new ControllerEvent(ControllerEvent.SnapshotData, this.data, this.isValid(this.data))
+        const event = new ControllerEvent(ControllerEvent.SnapshotData, this.data, this.isValid(this.data));
         this._fireEvent(event);
     }
 }

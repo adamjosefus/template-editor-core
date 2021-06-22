@@ -22,7 +22,9 @@ export class ControllerEvent<ControllerDataType extends IData> extends CustomEve
             detail: {
                 data,
                 valid,
-            }
+            },
+            bubbles: true,
+            composed: true,
         })
     }
 }

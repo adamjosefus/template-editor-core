@@ -8,9 +8,10 @@ import type { ConfigType } from "./ConfigType.js";
 import { SceneEvent } from "./SceneEvent.js";
 import { EditorEvent } from './EditorEvent.js';
 import type { ExportDataType } from './ExportDataType.js';
+import { IData } from './IData.js';
 
 
-export abstract class SceneElement<DATA> extends LitElement {
+export abstract class SceneElement<D extends IData> extends LitElement {
 
     private _storePath: string | null = null;
     get storePath(): string {
@@ -27,17 +28,17 @@ export abstract class SceneElement<DATA> extends LitElement {
 
         // Init
         window.addEventListener(ControllerEvent.Ready, (e: Event) => {
-            const evnt = e as ControllerEvent<DATA>;
+            const evnt = e as ControllerEvent<D>;
             this._fireReadyEvent();
         }, { once: true });
 
         window.addEventListener(ControllerEvent.DataUpdate, (e: Event) => {
-            const evnt = e as ControllerEvent<DATA>;
+            const evnt = e as ControllerEvent<D>;
             this._onControllerUpdate(evnt);
         });
 
         window.addEventListener(EditorEvent.ExportRequest, (e: Event) => {
-            const evnt = e as EditorEvent;
+            const evnt = e as EditorEvent<D>;
             this._onEditorExportRequest(evnt);
         });
 
@@ -87,18 +88,18 @@ export abstract class SceneElement<DATA> extends LitElement {
 
 
     // Data
-    private _data: DATA | null = null;
+    private _data: D | null = null;
     private isDataUpdatedToggle = false;
     private isDataValidToggle = false;
 
-    private _updateData(data: DATA, isValid: boolean): void {
+    private _updateData(data: D, isValid: boolean): void {
         this._data = data;
         this.isDataValidToggle = isValid;
         this.isDataUpdatedToggle = true;
     }
 
 
-    getData(): DATA {
+    getData(): D {
         if (this._data === null) throw new Error("Data is null. Test int by method hasData");
 
         this.isDataUpdatedToggle = false;
@@ -259,18 +260,18 @@ export abstract class SceneElement<DATA> extends LitElement {
 
 
     // Handlers
-    private _onControllerUpdate(e: ControllerEvent<DATA>) {
+    private _onControllerUpdate(e: ControllerEvent<D>) {
         this._updateData(e.detail.data, e.detail.valid);
     }
 
 
-    private _onEditorExportRequest(e: EditorEvent) {
+    private _onEditorExportRequest(e: EditorEvent<D>) {
         this._fireExportEvent();
     }
 
 
     // Events
-    private _fireEvent(event: SceneEvent<DATA>): void {
+    private _fireEvent(event: SceneEvent<D>): void {
         this.dispatchEvent(event);
         window.dispatchEvent(event);
     }
