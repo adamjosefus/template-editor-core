@@ -24,7 +24,9 @@ export class SceneEvent<DataType> extends CustomEvent<{
         super(typeArg, {
             detail: {
                 scene
-            }
+            },
+            bubbles: true,
+            composed: true,
         });
     }
 }

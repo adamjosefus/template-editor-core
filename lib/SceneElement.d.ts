@@ -1,7 +1,8 @@
 import { LitElement } from 'lit';
 import type { ConfigType } from "./ConfigType.js";
 import type { ExportDataType } from './ExportDataType.js';
-export declare abstract class SceneElement<DATA> extends LitElement {
+import { IData } from './IData.js';
+export declare abstract class SceneElement<D extends IData> extends LitElement {
     private _storePath;
     get storePath(): string;
     constructor(width: number | {
@@ -19,7 +20,7 @@ export declare abstract class SceneElement<DATA> extends LitElement {
     private isDataUpdatedToggle;
     private isDataValidToggle;
     private _updateData;
-    getData(): DATA;
+    getData(): D;
     hasData(): boolean;
     isDataValid(): boolean;
     /**
