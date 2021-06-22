@@ -1,7 +1,7 @@
 import { LitElement } from 'lit';
 import type { IData } from "./IData.js";
 export declare abstract class ControllerElement<D extends IData> extends LitElement {
-    data: D;
+    protected _data: D;
     constructor(defaultData: D);
     connectedCallback(): void;
     disconnectedCallback(): void;
@@ -12,8 +12,11 @@ export declare abstract class ControllerElement<D extends IData> extends LitElem
     init(): Promise<void>;
     private _startup;
     startup(): Promise<void>;
-    isValid(data: D): boolean;
-    isValidStructure(data: D): boolean;
+    getData(): D;
+    setData(data: D): void;
+    reflectDataToControls(data: D): void;
+    isDataValid(data: D): boolean;
+    isStructureValid(data: D): boolean;
     private _onSnapshotDataRequest;
     private _onSnapshotData;
     private _fireEvent;

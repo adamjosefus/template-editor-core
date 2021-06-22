@@ -8,13 +8,13 @@ import { EditorEvent } from './EditorEvent.js';
 
 export abstract class ControllerElement<D extends IData> extends LitElement {
 
-    data: D;
+    protected _data: D;
 
     constructor(defaultData: D) {
         super();
 
         // Data
-        this.data = defaultData;
+        this._data = defaultData;
     }
 
 
@@ -80,16 +80,37 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
 
     async startup(): Promise<void> {
-        throw new Error(`${this.tagName}: method startup is not defined.`);
+        throw new Error(`${this.tagName}: method "startup" is not defined.`);
     }
 
 
-    isValid(data: D): boolean {
-        throw new Error(`${this.tagName}: method isValid is not defined.`);
+    getData(): D {
+        return this._data;
     }
 
-    isValidStructure(data: D): boolean {
-        throw new Error(`${this.tagName}: method isValidStructure is not defined.`);
+
+    setData(data: D): void {
+        if (this.isStructureValid(data)) {
+            this._data = data;
+            this._fireDataUpdateEvent();
+        } else {
+            throw new Error("Data structure is not valid.");
+        }
+    }
+
+
+    reflectDataToControls(data: D): void {
+        throw new Error(`${this.tagName}: method "reflectDataToControls" is not defined.`);
+    }
+
+
+    isDataValid(data: D): boolean {
+        throw new Error(`${this.tagName}: method "isValid" is not defined.`);
+    }
+
+
+    isStructureValid(data: D): boolean {
+        throw new Error(`${this.tagName}: method "isStructureValid" is not defined.`);
     }
 
 
@@ -99,11 +120,11 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
 
     private _onSnapshotData(e: EditorEvent<D>) {
-        if (e.detail.data !== null && this.isValidStructure(e.detail.data)) {     
-            this.data = e.detail.data;
-            this._fireDataUpdateEvent();
+        if (e.detail.data !== null) {
+            this.setData(e.detail.data);
         }
     }
+
 
     // Events
     private _fireEvent(event: ControllerEvent<D>): void {
@@ -113,19 +134,25 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
 
     protected _fireReadyEvent() {
-        const event = new ControllerEvent(ControllerEvent.Ready, this.data, this.isValid(this.data));
+        const data = this.getData();
+        const event = new ControllerEvent(ControllerEvent.Ready, data, this.isDataValid(data));
+
         this._fireEvent(event);
     }
 
 
     protected _fireDataUpdateEvent() {
-        const event = new ControllerEvent(ControllerEvent.DataUpdate, this.data, this.isValid(this.data));
+        const data = this.getData();
+        const event = new ControllerEvent(ControllerEvent.DataUpdate, data, this.isDataValid(data));
+
         this._fireEvent(event);
     }
 
 
     protected _fireSnapshotDataEvent() {
-        const event = new ControllerEvent(ControllerEvent.SnapshotData, this.data, this.isValid(this.data));
+        const data = this.getData();
+        const event = new ControllerEvent(ControllerEvent.SnapshotData, data, this.isDataValid(data));
+
         this._fireEvent(event);
     }
 }
