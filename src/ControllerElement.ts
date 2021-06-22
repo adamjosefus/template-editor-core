@@ -1,6 +1,6 @@
 import { html, css, LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js'
-import { ControllerEvent, ControllerEventType } from './ControllerEvent.js';
+import { ControllerEvent } from './ControllerEvent.js';
 import { SceneEvent } from './SceneEvent.js';
 import type { IData } from "./IData.js";
 import { EditorEvent } from './EditorEvent.js';
@@ -51,7 +51,10 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
 
 
     private _isSceneReady: boolean = false;
+
     private _isControllerReady: boolean = false;
+
+
     isReady(): boolean {
         return this._isControllerReady;
     }
@@ -76,11 +79,6 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
 
 
     isValid(data: DATA): boolean {
-        throw new Error(`${this.tagName}: method isValid is not defined.`);
-    }
-
-
-    isSame(data: DATA): boolean {
         throw new Error(`${this.tagName}: method isValid is not defined.`);
     }
 

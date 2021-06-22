@@ -1,7 +1,7 @@
 import type { IData } from "./IData.js";
 
 
-export const enum ControllerEventType {
+const enum ControllerEventType {
     Ready = 'templateEditor-controller-ready',
     DataUpdate = 'templateEditor-controller-dataUpdate',
     SnapshotData = 'templateEditor-controller-snapshotData',

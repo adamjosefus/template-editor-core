@@ -1,5 +1,5 @@
 import type { IData } from "./IData.js";
-export declare const enum ControllerEventType {
+declare const enum ControllerEventType {
     Ready = "templateEditor-controller-ready",
     DataUpdate = "templateEditor-controller-dataUpdate",
     SnapshotData = "templateEditor-controller-snapshotData"
@@ -13,3 +13,4 @@ export declare class ControllerEvent<ControllerDataType extends IData> extends C
     static readonly SnapshotData = ControllerEventType.SnapshotData;
     constructor(typeArg: ControllerEventType, data: ControllerDataType, valid: boolean);
 }
+export {};
