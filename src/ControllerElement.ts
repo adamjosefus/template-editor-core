@@ -93,6 +93,8 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
         if (this.isStructureValid(data)) {
             this._data = data;
             this._fireDataUpdateEvent();
+            
+            this.reflectDataToControls(data);
         } else {
             throw new Error("Data structure is not valid.");
         }
