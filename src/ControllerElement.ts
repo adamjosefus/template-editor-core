@@ -1,6 +1,6 @@
 import { html, css, LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js'
-import { ControllerEvent } from './ControllerEvent.js';
+import { ControllerEvent, ControllerEventType } from './ControllerEvent.js';
 import { SceneEvent } from './SceneEvent.js';
 import type { IData } from "./IData.js";
 import { EditorEvent } from './EditorEvent.js';
@@ -80,6 +80,11 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
     }
 
 
+    isSame(data: DATA): boolean {
+        throw new Error(`${this.tagName}: method isValid is not defined.`);
+    }
+
+
     private _onSnapshotDataRequest(e: EditorEvent) {
         this._fireSnapshotDataEvent();
     }
@@ -90,21 +95,30 @@ export abstract class ControllerElement<DATA extends IData> extends LitElement {
         window.dispatchEvent(event);
     }
 
+    private _createEvent(typeArg: ControllerEventType): ControllerEvent<DATA> {
+        const valid = this.isValid(this.data);
+        // const changed = 
+
+        // this.
+
+        return new ControllerEvent(typeArg, this.data, valid, cahnged);
+    }
+
 
     protected _fireReadyEvent() {
-        const event = new ControllerEvent(ControllerEvent.Ready, this.data, this.isValid(this.data))
+        const event = this._createEvent(ControllerEvent.Ready);
         this._fireEvent(event);
     }
 
 
     protected _fireDataUpdateEvent() {
-        const event = new ControllerEvent(ControllerEvent.DataUpdate, this.data, this.isValid(this.data))
+        const event = this._createEvent(ControllerEvent.DataUpdate);
         this._fireEvent(event);
     }
 
 
     protected _fireSnapshotDataEvent() {
-        const event = new ControllerEvent(ControllerEvent.SnapshotData, this.data, this.isValid(this.data))
+        const event = this._createEvent(ControllerEvent.SnapshotData);
         this._fireEvent(event);
     }
 }
