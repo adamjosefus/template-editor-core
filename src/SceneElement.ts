@@ -27,14 +27,12 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         this._getHeightCallback = typeof height === 'number' ? (() => height) : height;
 
         // Init
-        window.addEventListener(ControllerEvent.Ready, (e: Event) => {
-            const evnt = e as ControllerEvent<D>;
+        window.addEventListener('controller-ready', (e: ControllerEvent<D>) => {
             this._fireReadyEvent();
         }, { once: true });
 
-        window.addEventListener(ControllerEvent.DataUpdate, (e: Event) => {
-            const evnt = e as ControllerEvent<D>;
-            this._onControllerUpdate(evnt);
+        window.addEventListener('controller-update', (e: ControllerEvent<D>) => {
+            this._onControllerUpdate(e);
         });
 
         window.addEventListener('editor-export-request', (e: EditorEvent<D>) => {

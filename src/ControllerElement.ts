@@ -137,7 +137,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireReadyEvent() {
         const data = this.getData();
-        const event = new ControllerEvent(ControllerEvent.Ready, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-ready', data, this.isDataValid(data));
 
         this._fireEvent(event);
     }
@@ -145,7 +145,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireDataUpdateEvent() {
         const data = this.getData();
-        const event = new ControllerEvent(ControllerEvent.DataUpdate, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-update', data, this.isDataValid(data));
 
         this._fireEvent(event);
     }
@@ -153,7 +153,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireSnapshotDataEvent() {
         const data = this.getData();
-        const event = new ControllerEvent(ControllerEvent.SnapshotData, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-snapshot', data, this.isDataValid(data));
 
         this._fireEvent(event);
     }

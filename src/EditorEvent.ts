@@ -1,6 +1,6 @@
 import type { IData } from "./IData.js";
 
-interface TemplatoneEditorEventHandlersEventMap<D> {
+interface EditorEventHandlersEventMap<D> {
     'editor-export-request': EditorEvent<D>,
     'editor-snapshot-data-request': EditorEvent<D>,
     'editor-snapshot-data': EditorEvent<D>,
@@ -8,12 +8,14 @@ interface TemplatoneEditorEventHandlersEventMap<D> {
 
 
 declare global {
-    interface GlobalEventHandlersEventMap extends TemplatoneEditorEventHandlersEventMap<any> { }
+    interface GlobalEventHandlersEventMap extends EditorEventHandlersEventMap<any> { }
 }
 
 
-export class EditorEvent<DataType extends IData = IData> extends CustomEvent<{ data: DataType | null }> {
-    constructor(typeArg: keyof TemplatoneEditorEventHandlersEventMap<unknown>, data: DataType | null = null) {
+export class EditorEvent<DataType extends IData = IData> extends CustomEvent<{
+    data: DataType | null
+}> {
+    constructor(typeArg: keyof EditorEventHandlersEventMap<DataType>, data: DataType | null = null) {
         super(typeArg, {
             detail: { data },
             bubbles: true,
