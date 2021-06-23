@@ -1,9 +1,8 @@
-import { html, css, LitElement } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js'
+import { LitElement } from 'lit';
 import { ControllerEvent } from './ControllerEvent.js';
 import { SceneEvent } from './SceneEvent.js';
-import type { IData } from "./IData.js";
 import { EditorEvent } from './EditorEvent.js';
+import type { IData } from "./IData.js";
 
 
 export abstract class ControllerElement<D extends IData> extends LitElement {
@@ -21,8 +20,9 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        window.addEventListener(SceneEvent.Ready, (e: Event) => {
-            const event = e as SceneEvent<D>;
+        window.addEventListener('scene-ready', (e: SceneEvent<D>) => {
+            e.stopPropagation();
+
             this._isSceneReady = true;
 
             if (this._isControllerReady && this._isSceneReady) {
@@ -31,17 +31,16 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
         }, { once: true });
 
 
-        window.addEventListener(EditorEvent.SnapshotDataRequest, (e: Event) => {
-            const evnt = e as EditorEvent<D>;
-            this._onSnapshotDataRequest(evnt);
+        window.addEventListener('editor-snapshot-data-request', (e: EditorEvent<D>) => {
+            e.stopPropagation();
+            this._onSnapshotDataRequest(e);
         });
 
 
-        window.addEventListener(EditorEvent.SnapshotData, (e: Event) => {
-            const evnt = e as EditorEvent<D>;
-            this._onSnapshotData(evnt);
+        window.addEventListener('editor-snapshot-data', (e: EditorEvent<D>) => {
+            e.stopPropagation();
+            this._onSnapshotData(e);
         });
-
     }
 
 
@@ -137,7 +136,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireReadyEvent() {
         const data = this.getData();
-        const event = new ControllerEvent(ControllerEvent.Ready, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-ready', data, this.isDataValid(data));
 
         this._fireEvent(event);
     }
@@ -145,7 +144,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireDataUpdateEvent() {
         const data = this.getData();
-        const event = new ControllerEvent(ControllerEvent.DataUpdate, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-update', data, this.isDataValid(data));
 
         this._fireEvent(event);
     }
@@ -153,7 +152,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireSnapshotDataEvent() {
         const data = this.getData();
-        const event = new ControllerEvent(ControllerEvent.SnapshotData, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-snapshot', data, this.isDataValid(data));
 
         this._fireEvent(event);
     }

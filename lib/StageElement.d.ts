@@ -1,5 +1,6 @@
 import { LitElement } from 'lit';
-export declare class StageElement extends LitElement {
+import type { IData } from './IData.js';
+export declare class StageElement<D extends IData> extends LitElement {
     private _container;
     private _canvas;
     private _engine;

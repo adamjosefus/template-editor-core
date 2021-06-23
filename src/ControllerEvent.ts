@@ -1,30 +1,26 @@
 import type { IData } from "./IData.js";
 
-
-const enum ControllerEventType {
-    Ready = 'templateEditor-controller-ready',
-    DataUpdate = 'templateEditor-controller-dataUpdate',
-    SnapshotData = 'templateEditor-controller-snapshotData',
+interface ControllerEventHandlersEventMap<D> {
+    'controller-ready': ControllerEvent<D>,
+    'controller-update': ControllerEvent<D>,
+    'controller-snapshot': ControllerEvent<D>,
 }
 
 
-export class ControllerEvent<ControllerDataType extends IData> extends CustomEvent<{
-    data: ControllerDataType,
+declare global {
+    interface GlobalEventHandlersEventMap extends ControllerEventHandlersEventMap<any> { }
+}
+
+
+export class ControllerEvent<DataType extends IData = IData> extends CustomEvent<{
+    data: DataType,
     valid: boolean,
 }> {
-
-    static readonly Ready = ControllerEventType.Ready;
-    static readonly DataUpdate = ControllerEventType.DataUpdate;
-    static readonly SnapshotData = ControllerEventType.SnapshotData;
-
-    constructor(typeArg: ControllerEventType, data: ControllerDataType, valid: boolean) {
+    constructor(typeArg: keyof ControllerEventHandlersEventMap<DataType>, data: DataType, valid: boolean) {
         super(typeArg, {
-            detail: {
-                data,
-                valid,
-            },
+            detail: { data, valid },
             bubbles: true,
             composed: true,
-        })
+        });
     }
 }

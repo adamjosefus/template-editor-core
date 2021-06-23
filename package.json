@@ -1,6 +1,6 @@
 {
   "name": "@templatone/template-editor-core",
-  "version": "1.8.2-alpha",
+  "version": "1.9.0-alpha",
   "description": "Templatone core of editor template.",
   "homepage": "https://github.com/templatone/template-editor-core#readme",
   "bugs": {
@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@snowpack/plugin-typescript": "^1.2.1",
-    "snowpack": "^3.5.2",
-    "typescript": "^4.3.2"
+    "snowpack": "^3.5.9",
+    "typescript": "^4.3.4"
   },
   "publishConfig": {
     "access": "public"
