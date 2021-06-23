@@ -37,9 +37,8 @@ export abstract class SceneElement<D extends IData> extends LitElement {
             this._onControllerUpdate(evnt);
         });
 
-        window.addEventListener(EditorEvent.ExportRequest, (e: Event) => {
-            const evnt = e as EditorEvent<D>;
-            this._onEditorExportRequest(evnt);
+        window.addEventListener('editor-export-request', (e: EditorEvent<D>) => {
+            this._onEditorExportRequest(e);
         });
 
         this.init();

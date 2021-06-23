@@ -23,6 +23,8 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
         window.addEventListener(SceneEvent.Ready, (e: Event) => {
             const event = e as SceneEvent<D>;
+            event.stopPropagation();
+
             this._isSceneReady = true;
 
             if (this._isControllerReady && this._isSceneReady) {
@@ -31,17 +33,15 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
         }, { once: true });
 
 
-        window.addEventListener(EditorEvent.SnapshotDataRequest, (e: Event) => {
-            const evnt = e as EditorEvent<D>;
-            this._onSnapshotDataRequest(evnt);
+        // window.addEventListener(EditorEvent.SnapshotDataRequest, (e: Event) => {
+        window.addEventListener('editor-snapshot-data-request', (e: EditorEvent<D>) => {
+            this._onSnapshotDataRequest(e);
         });
 
 
-        window.addEventListener(EditorEvent.SnapshotData, (e: Event) => {
-            const evnt = e as EditorEvent<D>;
-            this._onSnapshotData(evnt);
+        window.addEventListener('editor-snapshot-data', (e: EditorEvent<D>) => {
+            this._onSnapshotData(e);
         });
-
     }
 
 

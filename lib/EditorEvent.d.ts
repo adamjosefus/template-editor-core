@@ -1,14 +1,16 @@
-declare const enum EventType {
-    ExportRequest = "templateEditor-exportRequest",
-    SnapshotDataRequest = "templateEditor-snapshotDataRequest",
-    SnapshotData = "templateEditor-snapshotData"
+import type { IData } from "./IData.js";
+interface TemplatoneEditorEventHandlersEventMap<D> {
+    'editor-export-request': EditorEvent<D>;
+    'editor-snapshot-data-request': EditorEvent<D>;
+    'editor-snapshot-data': EditorEvent<D>;
 }
-export declare class EditorEvent<DataType> extends CustomEvent<{
+declare global {
+    interface GlobalEventHandlersEventMap extends TemplatoneEditorEventHandlersEventMap<any> {
+    }
+}
+export declare class EditorEvent<DataType extends IData = IData> extends CustomEvent<{
     data: DataType | null;
 }> {
-    static ExportRequest: EventType;
-    static SnapshotDataRequest: EventType;
-    static SnapshotData: EventType;
-    constructor(typeArg: EventType, data?: DataType | null);
+    constructor(typeArg: keyof TemplatoneEditorEventHandlersEventMap<unknown>, data?: DataType | null);
 }
 export {};
