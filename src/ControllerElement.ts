@@ -31,13 +31,14 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
         }, { once: true });
 
 
-        // window.addEventListener(EditorEvent.SnapshotDataRequest, (e: Event) => {
         window.addEventListener('editor-snapshot-data-request', (e: EditorEvent<D>) => {
+            e.stopPropagation();
             this._onSnapshotDataRequest(e);
         });
 
 
         window.addEventListener('editor-snapshot-data', (e: EditorEvent<D>) => {
+            e.stopPropagation();
             this._onSnapshotData(e);
         });
     }

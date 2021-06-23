@@ -47,8 +47,9 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
      * @override
      */
     getExportData(): Promise<ExportDataType>;
-    private _onControllerUpdate;
     private _onEditorExportRequest;
+    private _onControllerReady;
+    private _onControllerUpdate;
     private _fireEvent;
     private _fireReadyEvent;
     private _fireSourceLoadEvent;

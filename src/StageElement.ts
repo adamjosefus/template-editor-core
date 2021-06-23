@@ -45,12 +45,10 @@ export class StageElement<D extends IData> extends LitElement {
 
 
     private _onStageRezie(e: SceneEvent<D>) {
-        console.log("_onStageRezie");
+        e.stopPropagation();
 
-        const event = e as SceneEvent<D>;
-
-        const width = event.detail.scene.getWidth();
-        const height = event.detail.scene.getHeight();
+        const width = e.detail.scene.getWidth();
+        const height = e.detail.scene.getHeight();
 
         this._lastStageWidth = width;
         this._lastStageHeight = height;

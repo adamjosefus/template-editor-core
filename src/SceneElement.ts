@@ -27,17 +27,9 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         this._getHeightCallback = typeof height === 'number' ? (() => height) : height;
 
         // Init
-        window.addEventListener('controller-ready', (e: ControllerEvent<D>) => {
-            this._fireReadyEvent();
-        }, { once: true });
-
-        window.addEventListener('controller-update', (e: ControllerEvent<D>) => {
-            this._onControllerUpdate(e);
-        });
-
-        window.addEventListener('editor-export-request', (e: EditorEvent<D>) => {
-            this._onEditorExportRequest(e);
-        });
+        window.addEventListener('controller-ready', (e) => this._onControllerReady(e), { once: true });
+        window.addEventListener('controller-update', (e) => this._onControllerUpdate(e));
+        window.addEventListener('editor-export-request', (e) => this._onEditorExportRequest(e));
 
         this.init();
     }
@@ -225,14 +217,6 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     // Methods
-    // getExportDependencies(): {
-    //     outputName: string,
-    //     canvas: HTMLCanvasElement,
-    // } {
-    //     throw new Error(`${this.tagName}: Method 'getCanvases' is not defined.`);
-    // }
-
-
     /**
      * @override
      */
@@ -242,13 +226,21 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     // Handlers
-    private _onControllerUpdate(e: ControllerEvent<D>) {
-        this._updateData(e.detail.data, e.detail.valid);
+    private _onEditorExportRequest(e: EditorEvent<D>) {
+        e.stopPropagation();
+        this._fireExportEvent();
     }
 
 
-    private _onEditorExportRequest(e: EditorEvent<D>) {
-        this._fireExportEvent();
+    private _onControllerReady(e: ControllerEvent<D>) {
+        e.stopPropagation();
+        this._fireReadyEvent();
+    }
+
+
+    private _onControllerUpdate(e: ControllerEvent<D>) {
+        e.stopPropagation();
+        this._updateData(e.detail.data, e.detail.valid);
     }
 
 
