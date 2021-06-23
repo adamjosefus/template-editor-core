@@ -247,7 +247,6 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     // Events
     private _fireEvent(event: SceneEvent<D>): void {
         this.dispatchEvent(event);
-        window.dispatchEvent(event);
     }
 
 
