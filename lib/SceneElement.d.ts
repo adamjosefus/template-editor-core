@@ -1,7 +1,7 @@
 import { LitElement } from 'lit';
-import type { ConfigType } from "./ConfigType.js";
 import type { ExportDataType } from './ExportDataType.js';
-import { IData } from './IData.js';
+import type { ConfigType } from "./ConfigType.js";
+import type { IData } from './IData.js';
 export declare abstract class SceneElement<D extends IData> extends LitElement {
     private _storePath;
     get storePath(): string;
@@ -52,6 +52,6 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
     private _fireEvent;
     private _fireReadyEvent;
     private _fireSourceLoadEvent;
-    private _fireResizeReadyEvent;
+    private _fireResizeEvent;
     private _fireExportEvent;
 }

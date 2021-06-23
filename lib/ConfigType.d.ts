@@ -1,6 +1,6 @@
 export declare function updateConfig(data: any): ConfigType;
 export declare type ConfigType = ConfigType_v1;
-interface ConfigType_v1 extends ConfigType_Common {
+interface ConfigType_v1 extends ConfigOriginType {
     configType: 1;
     main: string;
     preview?: string;
@@ -13,7 +13,7 @@ interface ConfigType_v1 extends ConfigType_Common {
         }[];
     };
 }
-interface ConfigType_Common {
+interface ConfigOriginType {
     configType: number;
 }
 export {};

@@ -1,9 +1,8 @@
-import { html, css, LitElement } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js'
+import { LitElement } from 'lit';
 import { ControllerEvent } from './ControllerEvent.js';
 import { SceneEvent } from './SceneEvent.js';
-import type { IData } from "./IData.js";
 import { EditorEvent } from './EditorEvent.js';
+import type { IData } from "./IData.js";
 
 
 export abstract class ControllerElement<D extends IData> extends LitElement {
@@ -21,9 +20,8 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        window.addEventListener(SceneEvent.Ready, (e: Event) => {
-            const event = e as SceneEvent<D>;
-            event.stopPropagation();
+        window.addEventListener('scene-ready', (e: SceneEvent<D>) => {
+            e.stopPropagation();
 
             this._isSceneReady = true;
 

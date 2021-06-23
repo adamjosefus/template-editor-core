@@ -2,10 +2,11 @@ import { html, css, LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js'
 import { Engine } from "@templatone/kreslo";
 import { SceneEvent } from "./SceneEvent.js";
+import type { IData } from './IData.js';
 
 
 @customElement('template-stage')
-export class StageElement extends LitElement {
+export class StageElement<D extends IData> extends LitElement {
 
     @query('#container')
     private _container: HTMLElement;
@@ -27,7 +28,7 @@ export class StageElement extends LitElement {
         const engine = new Engine(canvas, 0, 0, undefined, null);
 
         window.addEventListener('resize', e => this._onClientResize());
-        window.addEventListener(SceneEvent.Resize, e => this._onStageRezie(e as SceneEvent<unknown>));
+        window.addEventListener('scene-resize', e => this._onStageRezie(e as SceneEvent<D>));
 
         this._container = container;
         this._canvas = canvas;
@@ -43,10 +44,10 @@ export class StageElement extends LitElement {
     }
 
 
-    private _onStageRezie(e: SceneEvent<unknown>) {
+    private _onStageRezie(e: SceneEvent<D>) {
         console.log("_onStageRezie");
 
-        const event = e as SceneEvent<unknown>;
+        const event = e as SceneEvent<D>;
 
         const width = event.detail.scene.getWidth();
         const height = event.detail.scene.getHeight();

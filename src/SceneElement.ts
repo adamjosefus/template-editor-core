@@ -1,14 +1,14 @@
-import { html, css, LitElement } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js'
+import { LitElement } from 'lit';
+import { state } from 'lit/decorators.js'
 import { WebFonts as WebFontUtils } from "@templatone/utils";
-import type { WeightType as FontWeightType } from "@templatone/utils/lib/WebFonts.js";
 import { ControllerEvent } from "./ControllerEvent.js";
 import { updateConfig } from "./ConfigType.js";
-import type { ConfigType } from "./ConfigType.js";
 import { SceneEvent } from "./SceneEvent.js";
 import { EditorEvent } from './EditorEvent.js';
 import type { ExportDataType } from './ExportDataType.js';
-import { IData } from './IData.js';
+import type { ConfigType } from "./ConfigType.js";
+import type { IData } from './IData.js';
+import type { WeightType as FontWeightType } from "@templatone/utils/lib/WebFonts.js";
 
 
 export abstract class SceneElement<D extends IData> extends LitElement {
@@ -62,7 +62,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         if (value !== this._lastWidth) {
             this._lastWidth = value;
 
-            this._fireResizeReadyEvent();
+            this._fireResizeEvent();
         }
 
         return value;
@@ -76,8 +76,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
         if (value !== this._lastHeight) {
             this._lastHeight = value;
-
-            this._fireResizeReadyEvent();
+            this._fireResizeEvent();
         }
 
         return value;
@@ -242,20 +241,6 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     }
 
 
-    // private _downloadImages() {
-    //     const dependencies = this.getExportDependencies();
-
-    //     const filename = `${dependencies.outputName}.png`;
-    //     const url = dependencies.canvas.toDataURL('image/png');
-
-    //     const anchor = document.createElement('a');
-    //     anchor.href = url;
-    //     anchor.download = filename;
-
-    //     anchor.click();
-    // }
-
-
     // Handlers
     private _onControllerUpdate(e: ControllerEvent<D>) {
         this._updateData(e.detail.data, e.detail.valid);
@@ -275,25 +260,25 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     private _fireReadyEvent(): void {
-        const event = new SceneEvent(SceneEvent.Ready, this)
+        const event = new SceneEvent('scene-ready', this)
         this._fireEvent(event);
     }
 
 
     private _fireSourceLoadEvent(): void {
-        const event = new SceneEvent(SceneEvent.Load, this)
+        const event = new SceneEvent('scene-load', this)
         this._fireEvent(event);
     }
 
 
-    private _fireResizeReadyEvent(): void {
-        const event = new SceneEvent(SceneEvent.Resize, this)
+    private _fireResizeEvent(): void {
+        const event = new SceneEvent('scene-resize', this)
         this._fireEvent(event);
     }
 
 
     private _fireExportEvent(): void {
-        const event = new SceneEvent(SceneEvent.Export, this)
+        const event = new SceneEvent('scene-export', this)
         this._fireEvent(event);
     }
 
