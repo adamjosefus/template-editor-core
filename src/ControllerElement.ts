@@ -130,7 +130,6 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     // Events
     private _fireEvent(event: ControllerEvent<D>): void {
         this.dispatchEvent(event);
-        window.dispatchEvent(event);
     }
 
 
