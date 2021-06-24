@@ -8,7 +8,6 @@ export declare abstract class ControllerElement<D extends IData> extends LitElem
     connectedCallback(): void;
     disconnectedCallback(): void;
     firstUpdated(): void;
-    init(): Promise<void>;
     private _startup;
     startup(): Promise<void>;
     isReady(): boolean;

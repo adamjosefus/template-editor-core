@@ -16,6 +16,8 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
         super();
 
         this._data = defaultData;
+
+        this._startup();
     }
 
 
@@ -38,16 +40,10 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
 
     firstUpdated() {
-        this.init();
     }
 
 
     // Life Cycle
-    async init() {
-        await this._startup();
-    }
-
-
     private async _startup(): Promise<void> {
         await this.startup();
 

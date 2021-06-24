@@ -8,84 +8,24 @@ import type { IData } from './IData.js';
 @customElement('template-stage')
 export class StageElement<D extends IData> extends LitElement {
 
-    @query('#container')
-    private _container: HTMLElement;
-
-    @query('canvas')
-    private _canvas: HTMLCanvasElement;
-
-    private _engine: Engine;
-
-    private _lastStageWidth: number = 0;
-    private _lastStageHeight: number = 0;
-
-
     constructor() {
         super();
-
-        const container = this.shadowRoot!.getElementById('container') as HTMLElement;
-        const canvas = this.shadowRoot!.querySelector('canvas') as HTMLCanvasElement;
-        const engine = new Engine(canvas, 0, 0, undefined, null);
-
-        window.addEventListener('resize', e => this._onClientResize());
-        window.addEventListener('scene-resize', e => this._onStageRezie(e as SceneEvent<D>));
-
-        this._container = container;
-        this._canvas = canvas;
-        this._engine = engine;
-
-        this._engine.loop.addUpdateCallback(() => this._render());
-        this._engine.loop.start();
     }
 
 
-    private _onClientResize() {
-        this._updateSize();
+    connectedCallback() {
+        super.connectedCallback();
     }
 
 
-    private _onStageRezie(e: SceneEvent<D>) {
-        e.stopPropagation();
-
-        const width = e.detail.scene.getWidth();
-        const height = e.detail.scene.getHeight();
-
-        this._lastStageWidth = width;
-        this._lastStageHeight = height;
-
-        this._updateSize();
-    }
-
-
-    private _updateSize() {
-        const width: number = this._lastStageWidth;
-        const height: number = this._lastStageHeight;
-
-        const aspectRatio = width / height;
-
-        const clientWidth = this.clientWidth;
-        const clientHeight = this.clientWidth / aspectRatio;
-
-        this._container.style.setProperty('--aspect-ratio', `${aspectRatio}`);
-        this._container.style.setProperty('--width', `${clientWidth.toFixed(3)}px`);
-        this._container.style.setProperty('--height', `${clientHeight.toFixed(3)}px`);
-
-        this._engine.updateSize(clientWidth, clientHeight, 1, null);
-    }
-
-
-    private _render() {
-        this._engine.clear();
+    disconnectedCallback() {
+        super.disconnectedCallback();
     }
 
 
     render() {
         return html`
-            <div id="container" class="container">
-                <div class="overlay">
-                    <canvas></canvas>
-                </div>
-            
+            <div class="container">
                 <div class="scene">
                     <slot name="scene"></slot>
                 </div>
@@ -95,32 +35,7 @@ export class StageElement<D extends IData> extends LitElement {
 
 
     static styles = css`
-        .container {
-            display: block;
-            width: 100%;
-            height: 0;
-            padding-bottom: calc((1 / var(--aspect-ratio)) * 100%);
-        }
-
-        .overlay {
-            position: absolute;
-            z-index: 1;
-            width: var(--width);
-            height: var(--height);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .scene {
-            position: absolute;
-            z-index: 0;
-            width: var(--width);
-            height: var(--height);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        canvas {
+        :host {
             display: block;
             width: 100%;
         }
