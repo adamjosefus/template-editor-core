@@ -225,7 +225,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     private _onControllerUpdateHandle(e: ControllerEvent<D>) {
         e.stopPropagation();
 
-        this._data = e.detail.data;
+        this._data = { ...e.detail.data };
     }
 
 
