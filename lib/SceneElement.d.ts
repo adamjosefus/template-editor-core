@@ -10,24 +10,19 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
     }, height: number | {
         (): number;
     });
+    private _controller;
     private _lastWidth;
-    private _lastHeight;
     private _getWidthCallback?;
-    private _getHeightCallback?;
     getWidth(): number;
+    private _lastHeight;
+    private _getHeightCallback?;
     getHeight(): number;
     private _data;
-    private isDataUpdatedToggle;
-    private isDataValidToggle;
+    private _isDataValidToggle;
     private _updateData;
     getData(): D;
     hasData(): boolean;
     isDataValid(): boolean;
-    /**
-     * Check it data was updated from last get. The data can be identical.
-     * @deprecated
-     */
-    isDataUpdatedFromLastGet(): boolean;
     private _config;
     getConfig(): ConfigType;
     init(): Promise<void>;

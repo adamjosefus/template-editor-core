@@ -9,6 +9,7 @@ import type { ExportDataType } from './ExportDataType.js';
 import type { ConfigType } from "./ConfigType.js";
 import type { IData } from './IData.js';
 import type { WeightType as FontWeightType } from "@templatone/utils/lib/WebFonts.js";
+import { ControllerElement } from './ControllerElement.js';
 
 
 export abstract class SceneElement<D extends IData> extends LitElement {
@@ -34,16 +35,13 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         this.init();
     }
 
+    private _controller: ControllerElement<D> | null = null;
+
 
     // Size
     @state()
     private _lastWidth = 0;
-
-    @state()
-    private _lastHeight = 0;
-
     private _getWidthCallback?: { (): number };
-    private _getHeightCallback?: { (): number };
 
 
     getWidth(): number {
@@ -59,6 +57,11 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
         return value;
     }
+
+
+    @state()
+    private _lastHeight = 0;
+    private _getHeightCallback?: { (): number };
 
 
     getHeight(): number {
@@ -77,21 +80,16 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
     // Data
     private _data: D | null = null;
-    private isDataUpdatedToggle = false;
-    private isDataValidToggle = false;
+    private _isDataValidToggle = false;
 
     private _updateData(data: D, isValid: boolean): void {
         this._data = data;
-        this.isDataValidToggle = isValid;
-        this.isDataUpdatedToggle = true;
+        this._isDataValidToggle = isValid;
     }
 
 
     getData(): D {
         if (this._data === null) throw new Error("Data is null. Test int by method hasData");
-
-        this.isDataUpdatedToggle = false;
-
 
         return this._data;
     }
@@ -103,16 +101,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     isDataValid(): boolean {
-        return this.hasData() && this.isDataValidToggle;
-    }
-
-
-    /**
-     * Check it data was updated from last get. The data can be identical. 
-     * @deprecated
-     */
-    isDataUpdatedFromLastGet(): boolean {
-        return this.isDataUpdatedToggle;
+        return this.hasData() && this._isDataValidToggle;
     }
 
 
@@ -227,6 +216,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
     private _onControllerReady(e: ControllerEvent<D>) {
         e.stopPropagation();
+        this._controller = e.detail.controller;
         this._fireReadyEvent();
     }
 
