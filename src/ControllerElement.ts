@@ -31,15 +31,15 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
         }, { once: true });
 
 
-        window.addEventListener('editor-snapshot-data-request', (e: EditorEvent<D>) => {
+        window.addEventListener('editor-saving-snapshot', (e: EditorEvent<D>) => {
             e.stopPropagation();
-            this._onSnapshotDataRequest(e);
+            this._onSavingSnapshot(e);
         });
 
 
-        window.addEventListener('editor-snapshot-data', (e: EditorEvent<D>) => {
+        window.addEventListener('editor-load-snapshot', (e: EditorEvent<D>) => {
             e.stopPropagation();
-            this._onSnapshotData(e);
+            this._onLoadSnapshot(e);
         });
     }
 
@@ -110,6 +110,11 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
+    isValid(): boolean {
+        return this.isDataValid(this.getData());
+    }
+
+
     isDataValid(data: D): boolean {
         throw new Error(`${this.tagName}: method "isValid" is not defined.`);
     }
@@ -120,12 +125,12 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
-    private _onSnapshotDataRequest(e: EditorEvent<D>) {
+    private _onSavingSnapshot(e: EditorEvent<D>) {
         this._fireSnapshotDataEvent();
     }
 
 
-    private _onSnapshotData(e: EditorEvent<D>) {
+    private _onLoadSnapshot(e: EditorEvent<D>) {
         if (e.detail.data !== null) {
             this.setData(e.detail.data);
         }
@@ -143,7 +148,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireDataUpdateEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-update', this, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-data-update', this, data, this.isDataValid(data));
 
         this.dispatchEvent(event);
     }
@@ -151,7 +156,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireSnapshotDataEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-snapshot', this, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-create-snapshot', this, data, this.isDataValid(data));
 
         this.dispatchEvent(event);
     }

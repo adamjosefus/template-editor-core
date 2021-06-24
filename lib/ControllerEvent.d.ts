@@ -2,8 +2,8 @@ import { ControllerElement } from "./ControllerElement.js";
 import type { IData } from "./IData.js";
 export interface ControllerEventHandlersEventMap<D> {
     'controller-ready': ControllerEvent<D>;
-    'controller-update': ControllerEvent<D>;
-    'controller-snapshot': ControllerEvent<D>;
+    'controller-data-update': ControllerEvent<D>;
+    'controller-create-snapshot': ControllerEvent<D>;
 }
 declare global {
     interface GlobalEventHandlersEventMap extends ControllerEventHandlersEventMap<any> {

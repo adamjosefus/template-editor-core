@@ -2,8 +2,8 @@ import type { IData } from "./IData.js";
 
 export interface EditorEventHandlersEventMap<D> {
     'editor-export-request': EditorEvent<D>,
-    'editor-snapshot-data-request': EditorEvent<D>,
-    'editor-snapshot-data': EditorEvent<D>,
+    'editor-saving-snapshot': EditorEvent<D>,
+    'editor-load-snapshot': EditorEvent<D>,
 }
 
 

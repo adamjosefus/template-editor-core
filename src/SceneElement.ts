@@ -14,10 +14,17 @@ import { ControllerElement } from './ControllerElement.js';
 
 export abstract class SceneElement<D extends IData> extends LitElement {
 
-    private _storePath: string | null = null;
+    private _templateDataUrl: string | null = null;
+    get templateDataUrl(): string {
+        if (this._templateDataUrl == null) throw new Error("storePath has not been set yet.");
+        return this._templateDataUrl;
+    }
+
+    /**
+     * @deprecated Use `templateDataUrl`.
+     */
     get storePath(): string {
-        if (this._storePath == null) throw new Error("storePath has not been set yet.");
-        return this._storePath;
+        return this.templateDataUrl;
     }
 
 
@@ -29,7 +36,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
         // Init
         window.addEventListener('controller-ready', (e) => this._onControllerReady(e), { once: true });
-        window.addEventListener('controller-update', (e) => this._onControllerUpdate(e));
+        window.addEventListener('controller-data-update', (e) => this._onControllerUpdate(e));
         window.addEventListener('editor-export-request', (e) => this._onEditorExportRequest(e));
 
         this.init();
@@ -38,7 +45,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     private _controller: ControllerElement<D> | null = null;
 
 
-    // Size
+    // Sizes
     @state()
     private _lastWidth = 0;
     private _getWidthCallback?: { (): number };
@@ -80,12 +87,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
     // Data
     private _data: D | null = null;
-    private _isDataValidToggle = false;
-
-    private _updateData(data: D, isValid: boolean): void {
-        this._data = data;
-        this._isDataValidToggle = isValid;
-    }
+    // private _controllerValidity = false;
 
 
     getData(): D {
@@ -99,9 +101,18 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         return this._data !== null;
     }
 
+    
+    isValid(): boolean {
+        throw new Error(`${this.tagName}: method "isValid" is not defined.`);
+    }
 
-    isDataValid(): boolean {
-        return this.hasData() && this._isDataValidToggle;
+    private _lastValidityState: boolean = false;
+    setValidityState(valid: boolean) {
+        if (this._lastValidityState !== valid) {
+            this._fireChangeValidityEvent();
+        }
+
+        this._lastValidityState = valid;
     }
 
 
@@ -129,18 +140,18 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     private async _load(): Promise<void> {
-        this._storePath = this.getAttribute('store-path')!;
+        this._templateDataUrl = this.getAttribute('tempalte-data-url')!;
 
         await this._loadConfig();
         await this._loadFonts();
 
         this._isLoadedToggle = true;
-        this._fireSourceLoadEvent();
+        this._fireLoadEvent();
     }
 
 
     private async _loadConfig(): Promise<void> {
-        const path = `${this.storePath}/config.json`;
+        const path = `${this.templateDataUrl}/config.json`;
 
         const response = await fetch(path);
         const data = await response.json();
@@ -154,7 +165,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
         if (!config.assets.fonts) return;
 
-        const fontCssPath = `${this.storePath}/fonts.css`;
+        const fontCssPath = `${this.templateDataUrl}/fonts.css`;
 
 
         const familyDescriptions = WebFontUtils.convertFacesToFamilies(config.assets.fonts.map(f => {
@@ -210,12 +221,14 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     // Handlers
     private _onEditorExportRequest(e: EditorEvent<D>) {
         e.stopPropagation();
+
         this._fireExportEvent();
     }
 
 
     private _onControllerReady(e: ControllerEvent<D>) {
         e.stopPropagation();
+
         this._controller = e.detail.controller;
         this._fireReadyEvent();
     }
@@ -223,31 +236,38 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
     private _onControllerUpdate(e: ControllerEvent<D>) {
         e.stopPropagation();
-        this._updateData(e.detail.data, e.detail.valid);
+
+        this._data = e.detail.data;
     }
 
 
-    // Events
+    // Event fireing
     private _fireReadyEvent(): void {
-        const event = new SceneEvent('scene-ready', this)
+        const event = new SceneEvent('scene-ready', this, this.isValid())
         this.dispatchEvent(event);
     }
 
 
-    private _fireSourceLoadEvent(): void {
-        const event = new SceneEvent('scene-load', this)
+    private _fireLoadEvent(): void {
+        const event = new SceneEvent('scene-load', this, this.isValid())
         this.dispatchEvent(event);
     }
 
 
     private _fireResizeEvent(): void {
-        const event = new SceneEvent('scene-resize', this)
+        const event = new SceneEvent('scene-resize', this, this.isValid())
         this.dispatchEvent(event);
     }
 
 
     private _fireExportEvent(): void {
-        const event = new SceneEvent('scene-export', this)
+        const event = new SceneEvent('scene-export', this, this.isValid())
+        this.dispatchEvent(event);
+    }
+
+
+    private _fireChangeValidityEvent(): void {
+        const event = new SceneEvent('scene-change-validity', this, this.isValid())
         this.dispatchEvent(event);
     }
 

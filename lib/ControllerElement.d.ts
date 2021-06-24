@@ -16,10 +16,11 @@ export declare abstract class ControllerElement<D extends IData> extends LitElem
     setData(data: D): void;
     hasSameDataAs(value: D): boolean;
     reflectDataToControls(data: D): void;
+    isValid(): boolean;
     isDataValid(data: D): boolean;
     isStructureValid(data: D): boolean;
-    private _onSnapshotDataRequest;
-    private _onSnapshotData;
+    private _onSavingSnapshot;
+    private _onLoadSnapshot;
     protected _fireReadyEvent(): void;
     protected _fireDataUpdateEvent(): void;
     protected _fireSnapshotDataEvent(): void;

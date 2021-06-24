@@ -3,7 +3,11 @@ import type { ExportDataType } from './ExportDataType.js';
 import type { ConfigType } from "./ConfigType.js";
 import type { IData } from './IData.js';
 export declare abstract class SceneElement<D extends IData> extends LitElement {
-    private _storePath;
+    private _templateDataUrl;
+    get templateDataUrl(): string;
+    /**
+     * @deprecated Use `templateDataUrl`.
+     */
     get storePath(): string;
     constructor(width: number | {
         (): number;
@@ -18,11 +22,11 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
     private _getHeightCallback?;
     getHeight(): number;
     private _data;
-    private _isDataValidToggle;
-    private _updateData;
     getData(): D;
     hasData(): boolean;
-    isDataValid(): boolean;
+    isValid(): boolean;
+    private _lastValidityState;
+    setValidityState(valid: boolean): void;
     private _config;
     getConfig(): ConfigType;
     init(): Promise<void>;
@@ -40,7 +44,8 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
     private _onControllerReady;
     private _onControllerUpdate;
     private _fireReadyEvent;
-    private _fireSourceLoadEvent;
+    private _fireLoadEvent;
     private _fireResizeEvent;
     private _fireExportEvent;
+    private _fireChangeValidityEvent;
 }
