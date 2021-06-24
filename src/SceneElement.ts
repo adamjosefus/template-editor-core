@@ -50,7 +50,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     // Life Cycle
-    private async startup(): Promise<void> {
+    async startup(): Promise<void> {
         await this._load();
 
         this._isReadyToggle = true;

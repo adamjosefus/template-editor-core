@@ -12,7 +12,7 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
     });
     connectedCallback(): void;
     disconnectedCallback(): void;
-    private startup;
+    startup(): Promise<void>;
     private _load;
     private _loadConfig;
     private _loadFonts;
