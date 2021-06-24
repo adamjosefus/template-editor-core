@@ -218,9 +218,6 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     private _onControllerReadyHandle(e: ControllerEvent<D>) {
         e.stopPropagation();
 
-        console.log("this", this);
-        
-
         this._fireReadyEvent();
     }
 
