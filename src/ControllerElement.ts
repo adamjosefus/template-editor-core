@@ -23,14 +23,9 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this._onSceneReadyHandle.bind(this);
-        window.addEventListener('scene-ready', this._onSceneReadyHandle, { once: true });
-
-        this._onSavingSnapshotHandle.bind(this);
-        window.addEventListener('editor-saving-snapshot', this._onSavingSnapshotHandle, false);
-
-        this._onLoadSnapshothandle.bind(this);
-        window.addEventListener('editor-load-snapshot', this._onLoadSnapshothandle, false);
+        window.addEventListener('scene-ready', this._onSceneReadyHandle.bind(this), { once: true });
+        window.addEventListener('editor-saving-snapshot', this._onSavingSnapshotHandle.bind(this), false);
+        window.addEventListener('editor-load-snapshot', this._onLoadSnapshothandle.bind(this), false);
     }
 
 
