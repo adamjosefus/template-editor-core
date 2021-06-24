@@ -3,49 +3,47 @@ import type { ExportDataType } from './ExportDataType.js';
 import type { ConfigType } from "./ConfigType.js";
 import type { IData } from './IData.js';
 export declare abstract class SceneElement<D extends IData> extends LitElement {
-    private _storePath;
-    get storePath(): string;
+    private _templateDataUrl;
+    get templateDataUrl(): string;
     constructor(width: number | {
         (): number;
     }, height: number | {
         (): number;
     });
-    private _lastWidth;
-    private _lastHeight;
-    private _getWidthCallback?;
-    private _getHeightCallback?;
-    getWidth(): number;
-    getHeight(): number;
-    private _data;
-    private isDataUpdatedToggle;
-    private isDataValidToggle;
-    private _updateData;
-    getData(): D;
-    hasData(): boolean;
-    isDataValid(): boolean;
-    /**
-     * Check it data was updated from last get. The data can be identical.
-     * @deprecated
-     */
-    isDataUpdatedFromLastGet(): boolean;
-    private _config;
-    getConfig(): ConfigType;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
+    firstUpdated(): void;
     init(): Promise<void>;
-    private _isLoadedToggle;
-    isLoaded(): boolean;
     private _load;
+    startup(): Promise<void>;
+    private _startup;
     private _loadConfig;
     private _loadFonts;
+    private _config;
+    getConfig(): ConfigType;
+    private _isLoadedToggle;
+    isLoaded(): boolean;
+    private _lastWidth;
+    private _getWidthCallback?;
+    getWidth(): number;
+    private _lastHeight;
+    private _getHeightCallback?;
+    getHeight(): number;
+    private _data;
+    getData(): D;
+    hasData(): boolean;
+    isValid(): boolean;
+    private _lastValidityState;
+    setValidityState(valid: boolean): void;
     private _isReadyToggle;
     isReady(): boolean;
-    private _startup;
-    startup(): Promise<void>;
     getExportData(): Promise<ExportDataType>;
-    private _onEditorExportRequest;
-    private _onControllerReady;
-    private _onControllerUpdate;
+    private _onEditorExportRequestHandle;
+    private _onControllerReadyHandle;
+    private _onControllerUpdateHandle;
     private _fireReadyEvent;
-    private _fireSourceLoadEvent;
+    private _fireLoadEvent;
     private _fireResizeEvent;
     private _fireExportEvent;
+    private _fireChangeValidityEvent;
 }

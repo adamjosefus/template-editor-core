@@ -8,45 +8,37 @@ import type { IData } from "./IData.js";
 export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _data: D;
+    private _sceneReadyState: boolean = false;
+    private _controllerReadyState: boolean = false;
+
 
     constructor(defaultData: D) {
         super();
 
-        // Data
         this._data = defaultData;
     }
 
 
+    // Lit
     connectedCallback() {
         super.connectedCallback();
 
-        window.addEventListener('scene-ready', (e: SceneEvent<D>) => {
-            e.stopPropagation();
+        this._onSceneReadyHandle.bind(this);
+        window.addEventListener('scene-ready', this._onSceneReadyHandle, { once: true });
 
-            this._isSceneReady = true;
+        this._onSavingSnapshotHandle.bind(this);
+        window.addEventListener('editor-saving-snapshot', this._onSavingSnapshotHandle, false);
 
-            if (this._isControllerReady && this._isSceneReady) {
-                this._fireDataUpdateEvent();
-            }
-        }, { once: true });
-
-
-        window.addEventListener('editor-snapshot-data-request', (e: EditorEvent<D>) => {
-            e.stopPropagation();
-            this._onSnapshotDataRequest(e);
-        });
-
-
-        window.addEventListener('editor-snapshot-data', (e: EditorEvent<D>) => {
-            e.stopPropagation();
-            this._onSnapshotData(e);
-        });
+        this._onLoadSnapshothandle.bind(this);
+        window.addEventListener('editor-load-snapshot', this._onLoadSnapshothandle, false);
     }
 
 
     disconnectedCallback() {
         super.disconnectedCallback();
-        // TODO: remove listeners
+
+        window.removeEventListener('editor-saving-snapshot', this._onSavingSnapshotHandle);
+        window.removeEventListener('editor-load-snapshot', this._onLoadSnapshothandle);
     }
 
 
@@ -55,16 +47,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
-    private _isSceneReady: boolean = false;
-
-    private _isControllerReady: boolean = false;
-
-
-    isReady(): boolean {
-        return this._isControllerReady;
-    }
-
-
+    // Life Cycle
     async init() {
         await this._startup();
     }
@@ -73,7 +56,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     private async _startup(): Promise<void> {
         await this.startup();
 
-        this._isControllerReady = true;
+        this._controllerReadyState = true;
         this._fireReadyEvent();
     }
 
@@ -83,6 +66,13 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
+    // Methods
+    isReady(): boolean {
+        return this._controllerReadyState;
+    }
+
+
+    // Data
     getData(): D {
         return this._data;
     }
@@ -91,6 +81,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     setData(data: D): void {
         if (this.isStructureValid(data)) {
             this._data = data;
+            
             this._fireDataUpdateEvent();
             
             this.reflectDataToControls(data);
@@ -110,6 +101,11 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
+    isValid(): boolean {
+        return this.isDataValid(this.getData());
+    }
+
+
     isDataValid(data: D): boolean {
         throw new Error(`${this.tagName}: method "isValid" is not defined.`);
     }
@@ -120,12 +116,28 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
-    private _onSnapshotDataRequest(e: EditorEvent<D>) {
+    // Handles
+    private _onSceneReadyHandle(e: SceneEvent<D>) {
+        e.stopPropagation();
+
+        this._sceneReadyState = true;
+
+        if (this._controllerReadyState && this._sceneReadyState) {
+            this._fireDataUpdateEvent();
+        }
+    }
+
+
+    private _onSavingSnapshotHandle(e: EditorEvent<D>) {
+        e.stopPropagation();
+
         this._fireSnapshotDataEvent();
     }
 
 
-    private _onSnapshotData(e: EditorEvent<D>) {
+    private _onLoadSnapshothandle(e: EditorEvent<D>) {
+        e.stopPropagation();
+
         if (e.detail.data !== null) {
             this.setData(e.detail.data);
         }
@@ -135,7 +147,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     // Events
     protected _fireReadyEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-ready', this, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-ready', data, this.isDataValid(data));
 
         this.dispatchEvent(event);
     }
@@ -143,7 +155,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireDataUpdateEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-update', this, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-data-update', data, this.isDataValid(data));
 
         this.dispatchEvent(event);
     }
@@ -151,7 +163,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
     protected _fireSnapshotDataEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-snapshot', this, data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-create-snapshot', data, this.isDataValid(data));
 
         this.dispatchEvent(event);
     }
