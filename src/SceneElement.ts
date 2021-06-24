@@ -34,14 +34,9 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this._onControllerReadyHandle.bind(this);
-        window.addEventListener('controller-ready', this._onControllerReadyHandle, { once: true });
-
-        this._onControllerUpdateHandle.bind(this);
-        window.addEventListener('controller-data-update', this._onControllerUpdateHandle, false);
-
-        this._onEditorExportRequestHandle.bind(this);
-        window.addEventListener('editor-export-request', this._onEditorExportRequestHandle, false);
+        window.addEventListener('controller-ready', this._onControllerReadyHandle.bind(this), { once: true });
+        window.addEventListener('controller-data-update', this._onControllerUpdateHandle.bind(this), false);
+        window.addEventListener('editor-export-request', this._onEditorExportRequestHandle.bind(this), false);
     }
 
 
@@ -239,6 +234,9 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
     private _onControllerReadyHandle(e: ControllerEvent<D>) {
         e.stopPropagation();
+
+        console.log("this", this);
+        
 
         this._fireReadyEvent();
     }
