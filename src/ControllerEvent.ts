@@ -1,6 +1,6 @@
 import type { IData } from "./IData.js";
 
-interface ControllerEventHandlersEventMap<D> {
+export interface ControllerEventHandlersEventMap<D> {
     'controller-ready': ControllerEvent<D>,
     'controller-update': ControllerEvent<D>,
     'controller-snapshot': ControllerEvent<D>,

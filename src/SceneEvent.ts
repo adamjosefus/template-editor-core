@@ -2,7 +2,7 @@ import type { IData } from "./IData.js";
 import type { SceneElement } from "./SceneElement.js";
 
 
-interface SceneEventHandlersEventMap<D> {
+export interface SceneEventHandlersEventMap<D> {
     'scene-ready': SceneEvent<D>,
     'scene-load': SceneEvent<D>,
     'scene-update': SceneEvent<D>,

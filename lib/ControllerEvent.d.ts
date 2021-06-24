@@ -1,5 +1,5 @@
 import type { IData } from "./IData.js";
-interface ControllerEventHandlersEventMap<D> {
+export interface ControllerEventHandlersEventMap<D> {
     'controller-ready': ControllerEvent<D>;
     'controller-update': ControllerEvent<D>;
     'controller-snapshot': ControllerEvent<D>;
@@ -14,4 +14,3 @@ export declare class ControllerEvent<DataType extends IData = IData> extends Cus
 }> {
     constructor(typeArg: keyof ControllerEventHandlersEventMap<DataType>, data: DataType, valid: boolean);
 }
-export {};
