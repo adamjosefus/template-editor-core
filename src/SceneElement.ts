@@ -9,7 +9,6 @@ import type { ExportDataType } from './ExportDataType.js';
 import type { ConfigType } from "./ConfigType.js";
 import type { IData } from './IData.js';
 import type { WeightType as FontWeightType } from "@templatone/utils/lib/WebFonts.js";
-import { ControllerElement } from './ControllerElement.js';
 
 
 export abstract class SceneElement<D extends IData> extends LitElement {
@@ -27,6 +26,8 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
         this._getWidthCallback = typeof width === 'number' ? (() => width) : width;
         this._getHeightCallback = typeof height === 'number' ? (() => height) : height;
+
+        this._startup();
     }
 
 
@@ -48,18 +49,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     }
 
 
-    firstUpdated() {
-        this.init();
-    }
-
-
     // Life Cycle
-    async init(): Promise<void> {
-        await this._load();
-        await this._startup();
-    }
-
-
     private async _load(): Promise<void> {
         this._templateDataUrl = this.getAttribute('tempalte-data-url')!;
 
@@ -77,6 +67,8 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     private async _startup(): Promise<void> {
+        await this._load();
+
         await this.startup();
 
         this._isReadyToggle = true;

@@ -12,8 +12,6 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
     });
     connectedCallback(): void;
     disconnectedCallback(): void;
-    firstUpdated(): void;
-    init(): Promise<void>;
     private _load;
     startup(): Promise<void>;
     private _startup;
