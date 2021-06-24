@@ -27,7 +27,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         this._getWidthCallback = typeof width === 'number' ? (() => width) : width;
         this._getHeightCallback = typeof height === 'number' ? (() => height) : height;
 
-        this._startup();
+        this.startup();
     }
 
 
@@ -50,6 +50,14 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     // Life Cycle
+    private async startup(): Promise<void> {
+        await this._load();
+
+        this._isReadyToggle = true;
+        this._fireReadyEvent();
+    }
+
+
     private async _load(): Promise<void> {
         this._templateDataUrl = this.getAttribute('tempalte-data-url')!;
 
@@ -59,22 +67,6 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         this._isLoadedToggle = true;
         this._fireLoadEvent();
     }
-
-
-    async startup(): Promise<void> {
-        throw new Error(`${this.tagName}: Method 'startup' is not defined.`);
-    }
-
-
-    private async _startup(): Promise<void> {
-        await this._load();
-
-        await this.startup();
-
-        this._isReadyToggle = true;
-        this._fireReadyEvent();
-    }
-
 
 
     private async _loadConfig(): Promise<void> {
@@ -175,7 +167,6 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
     // Data
     private _data: D | null = null;
-    // private _controllerValidity = false;
 
 
     getData(): D {
