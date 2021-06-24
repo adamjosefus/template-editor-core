@@ -175,7 +175,6 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
     // Data
     private _data: D | null = null;
-    // private _controllerValidity = false;
 
 
     getData(): D {
