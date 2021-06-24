@@ -14,12 +14,12 @@ export declare abstract class ControllerElement<D extends IData> extends LitElem
     startup(): Promise<void>;
     getData(): D;
     setData(data: D): void;
+    hasSameDataAs(value: D): boolean;
     reflectDataToControls(data: D): void;
     isDataValid(data: D): boolean;
     isStructureValid(data: D): boolean;
     private _onSnapshotDataRequest;
     private _onSnapshotData;
-    private _fireEvent;
     protected _fireReadyEvent(): void;
     protected _fireDataUpdateEvent(): void;
     protected _fireSnapshotDataEvent(): void;

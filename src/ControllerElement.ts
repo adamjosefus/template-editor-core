@@ -100,6 +100,11 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
+    hasSameDataAs(value: D): boolean {
+        throw new Error(`${this.tagName}: method "hasSameDataAs" is not defined.`);
+    }
+
+
     reflectDataToControls(data: D): void {
         throw new Error(`${this.tagName}: method "reflectDataToControls" is not defined.`);
     }
@@ -128,31 +133,26 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
 
 
     // Events
-    private _fireEvent(event: ControllerEvent<D>): void {
-        this.dispatchEvent(event);
-    }
-
-
     protected _fireReadyEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-ready', data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-ready', this, data, this.isDataValid(data));
 
-        this._fireEvent(event);
+        this.dispatchEvent(event);
     }
 
 
     protected _fireDataUpdateEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-update', data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-update', this, data, this.isDataValid(data));
 
-        this._fireEvent(event);
+        this.dispatchEvent(event);
     }
 
 
     protected _fireSnapshotDataEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-snapshot', data, this.isDataValid(data));
+        const event = new ControllerEvent('controller-snapshot', this, data, this.isDataValid(data));
 
-        this._fireEvent(event);
+        this.dispatchEvent(event);
     }
 }

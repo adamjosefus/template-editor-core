@@ -208,18 +208,11 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     }
 
 
-    /**
-     * @override
-     */
     async startup(): Promise<void> {
         throw new Error(`${this.tagName}: Method 'startup' is not defined.`);
     }
 
 
-    // Methods
-    /**
-     * @override
-     */
     async getExportData(): Promise<ExportDataType> {
         throw new Error(`${this.tagName}: Method 'ExportDataType' is not defined.`);
     }
@@ -245,32 +238,27 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     // Events
-    private _fireEvent(event: SceneEvent<D>): void {
-        this.dispatchEvent(event);
-    }
-
-
     private _fireReadyEvent(): void {
         const event = new SceneEvent('scene-ready', this)
-        this._fireEvent(event);
+        this.dispatchEvent(event);
     }
 
 
     private _fireSourceLoadEvent(): void {
         const event = new SceneEvent('scene-load', this)
-        this._fireEvent(event);
+        this.dispatchEvent(event);
     }
 
 
     private _fireResizeEvent(): void {
         const event = new SceneEvent('scene-resize', this)
-        this._fireEvent(event);
+        this.dispatchEvent(event);
     }
 
 
     private _fireExportEvent(): void {
         const event = new SceneEvent('scene-export', this)
-        this._fireEvent(event);
+        this.dispatchEvent(event);
     }
 
 }
