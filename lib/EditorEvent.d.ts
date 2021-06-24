@@ -1,5 +1,5 @@
 import type { IData } from "./IData.js";
-interface EditorEventHandlersEventMap<D> {
+export interface EditorEventHandlersEventMap<D> {
     'editor-export-request': EditorEvent<D>;
     'editor-snapshot-data-request': EditorEvent<D>;
     'editor-snapshot-data': EditorEvent<D>;
@@ -13,4 +13,3 @@ export declare class EditorEvent<DataType extends IData = IData> extends CustomE
 }> {
     constructor(typeArg: keyof EditorEventHandlersEventMap<DataType>, data?: DataType | null);
 }
-export {};

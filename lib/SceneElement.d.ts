@@ -39,18 +39,11 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
     private _isReadyToggle;
     isReady(): boolean;
     private _startup;
-    /**
-     * @override
-     */
     startup(): Promise<void>;
-    /**
-     * @override
-     */
     getExportData(): Promise<ExportDataType>;
     private _onEditorExportRequest;
     private _onControllerReady;
     private _onControllerUpdate;
-    private _fireEvent;
     private _fireReadyEvent;
     private _fireSourceLoadEvent;
     private _fireResizeEvent;

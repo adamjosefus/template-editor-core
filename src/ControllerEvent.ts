@@ -1,6 +1,7 @@
+import { ControllerElement } from "./ControllerElement.js";
 import type { IData } from "./IData.js";
 
-interface ControllerEventHandlersEventMap<D> {
+export interface ControllerEventHandlersEventMap<D> {
     'controller-ready': ControllerEvent<D>,
     'controller-update': ControllerEvent<D>,
     'controller-snapshot': ControllerEvent<D>,
@@ -12,13 +13,14 @@ declare global {
 }
 
 
-export class ControllerEvent<DataType extends IData = IData> extends CustomEvent<{
-    data: DataType,
+export class ControllerEvent<D extends IData = IData> extends CustomEvent<{
+    controller: ControllerElement<D>,
+    data: D,
     valid: boolean,
 }> {
-    constructor(typeArg: keyof ControllerEventHandlersEventMap<DataType>, data: DataType, valid: boolean) {
+    constructor(typeArg: keyof ControllerEventHandlersEventMap<D>, controller: ControllerElement<D>, data: D, valid: boolean) {
         super(typeArg, {
-            detail: { data, valid },
+            detail: { controller, data, valid },
             bubbles: true,
             composed: true,
         });
