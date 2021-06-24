@@ -18,12 +18,13 @@ declare global {
 
 
 export class SceneEvent<DataType extends IData = IData> extends CustomEvent<{
-    scene: SceneElement<DataType>
+    scene: SceneElement<DataType>,
+    valid: boolean,
 }> {
 
     constructor(typeArg: keyof SceneEventHandlersEventMap<DataType>, scene: SceneElement<DataType>, valid: boolean) {
         super(typeArg, {
-            detail: { scene },
+            detail: { scene, valid },
             bubbles: true,
             composed: true,
         });

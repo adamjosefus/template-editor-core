@@ -13,6 +13,7 @@ declare global {
 }
 export declare class SceneEvent<DataType extends IData = IData> extends CustomEvent<{
     scene: SceneElement<DataType>;
+    valid: boolean;
 }> {
     constructor(typeArg: keyof SceneEventHandlersEventMap<DataType>, scene: SceneElement<DataType>, valid: boolean);
 }
