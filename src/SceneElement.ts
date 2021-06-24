@@ -20,12 +20,6 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         return this._templateDataUrl;
     }
 
-    /**
-     * @deprecated Use `templateDataUrl`.
-     */
-    get storePath(): string {
-        return this.templateDataUrl;
-    }
 
 
     constructor(width: number | { (): number }, height: number | { (): number }) {
@@ -33,16 +27,123 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
         this._getWidthCallback = typeof width === 'number' ? (() => width) : width;
         this._getHeightCallback = typeof height === 'number' ? (() => height) : height;
+    }
 
-        // Init
-        window.addEventListener('controller-ready', (e) => this._onControllerReady(e), { once: true });
-        window.addEventListener('controller-data-update', (e) => this._onControllerUpdate(e));
-        window.addEventListener('editor-export-request', (e) => this._onEditorExportRequest(e));
 
+    // Lit
+    connectedCallback() {
+        super.connectedCallback();
+
+        this._onControllerReadyHandle.bind(this);
+        window.addEventListener('controller-ready', this._onControllerReadyHandle, { once: true });
+
+        this._onControllerUpdateHandle.bind(this);
+        window.addEventListener('controller-data-update', this._onControllerUpdateHandle, false);
+
+        this._onEditorExportRequestHandle.bind(this);
+        window.addEventListener('editor-export-request', this._onEditorExportRequestHandle, false);
+    }
+
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+
+        window.removeEventListener('controller-data-update', this._onControllerUpdateHandle);
+        window.removeEventListener('editor-export-request', this._onEditorExportRequestHandle);
+    }
+
+
+    firstUpdated() {
         this.init();
     }
 
-    private _controller: ControllerElement<D> | null = null;
+
+    // Life Cycle
+    async init(): Promise<void> {
+        await this._load();
+        await this._startup();
+    }
+
+
+    private async _load(): Promise<void> {
+        this._templateDataUrl = this.getAttribute('tempalte-data-url')!;
+
+        await this._loadConfig();
+        await this._loadFonts();
+
+        this._isLoadedToggle = true;
+        this._fireLoadEvent();
+    }
+
+
+    async startup(): Promise<void> {
+        throw new Error(`${this.tagName}: Method 'startup' is not defined.`);
+    }
+
+
+    private async _startup(): Promise<void> {
+        await this.startup();
+
+        this._isReadyToggle = true;
+        this._fireReadyEvent();
+    }
+
+
+
+    private async _loadConfig(): Promise<void> {
+        const path = `${this.templateDataUrl}/config.json`;
+
+        const response = await fetch(path);
+        const data = await response.json();
+
+        this._config = updateConfig(data);
+    }
+
+
+    private async _loadFonts(): Promise<void> {
+        const config = this.getConfig();
+
+        if (!config.assets.fonts) return;
+
+        const fontCssPath = `${this.templateDataUrl}/fonts.css`;
+
+        const familyDescriptions = WebFontUtils.convertFacesToFamilies(config.assets.fonts.map(f => {
+            return {
+                family: f.family,
+                path: f.filename,
+                style: f.italic ? 'italic' : 'normal',
+                weight: f.weight as FontWeightType,
+            }
+        }));
+
+        const families = familyDescriptions.map(f => WebFontUtils.computeFamilyQuery(f.family, f.variations));
+
+        const webFontConfig: WebFont.Config = {
+            classes: false,
+            timeout: 30 * 1000,
+            custom: {
+                families: families,
+                urls: [fontCssPath]
+            },
+        };
+
+        await WebFontUtils.load(webFontConfig);
+    }
+
+
+    // Platform
+    private _config: ConfigType | null = null;
+    getConfig(): ConfigType {
+        if (this._config == null) throw new Error("Config has not been set yet.");
+        return this._config;
+    }
+
+
+    // - Load
+    private _isLoadedToggle: boolean = false;
+    isLoaded(): boolean {
+        return this._isLoadedToggle;
+    }
 
 
     // Sizes
@@ -101,10 +202,11 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         return this._data !== null;
     }
 
-    
+
     isValid(): boolean {
         throw new Error(`${this.tagName}: method "isValid" is not defined.`);
     }
+
 
     private _lastValidityState: boolean = false;
     setValidityState(valid: boolean) {
@@ -116,100 +218,9 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     }
 
 
-    // Config
-    private _config: ConfigType | null = null;
-    getConfig(): ConfigType {
-        if (this._config == null) throw new Error("Config has not been set yet.");
-        return this._config;
-    }
-
-
-
-    // Cycle
-    async init(): Promise<void> {
-        await this._load();
-        await this._startup();
-    }
-
-
-    // - Load
-    private _isLoadedToggle: boolean = false;
-    isLoaded(): boolean {
-        return this._isLoadedToggle;
-    }
-
-
-    private async _load(): Promise<void> {
-        this._templateDataUrl = this.getAttribute('tempalte-data-url')!;
-
-        await this._loadConfig();
-        await this._loadFonts();
-
-        this._isLoadedToggle = true;
-        this._fireLoadEvent();
-    }
-
-
-    private async _loadConfig(): Promise<void> {
-        const path = `${this.templateDataUrl}/config.json`;
-
-        const response = await fetch(path);
-        const data = await response.json();
-
-        this._config = updateConfig(data);
-    }
-
-
-    private async _loadFonts(): Promise<void> {
-        const config = this.getConfig();
-
-        if (!config.assets.fonts) return;
-
-        const fontCssPath = `${this.templateDataUrl}/fonts.css`;
-
-
-        const familyDescriptions = WebFontUtils.convertFacesToFamilies(config.assets.fonts.map(f => {
-            return {
-                family: f.family,
-                path: f.filename,
-                style: f.italic ? 'italic' : 'normal',
-                weight: f.weight as FontWeightType,
-            }
-        }));
-
-
-        const families = familyDescriptions.map(f => WebFontUtils.computeFamilyQuery(f.family, f.variations));
-
-        const webFontConfig: WebFont.Config = {
-            classes: false,
-            timeout: 30 * 1000,
-            custom: {
-                families: families,
-                urls: [fontCssPath]
-            },
-        };
-
-        await WebFontUtils.load(webFontConfig);
-    }
-
-
-    // - Ready
     private _isReadyToggle: boolean = false;
     isReady(): boolean {
         return this._isReadyToggle;
-    }
-
-
-    private async _startup(): Promise<void> {
-        await this.startup();
-
-        this._isReadyToggle = true;
-        this._fireReadyEvent();
-    }
-
-
-    async startup(): Promise<void> {
-        throw new Error(`${this.tagName}: Method 'startup' is not defined.`);
     }
 
 
@@ -219,22 +230,21 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     // Handlers
-    private _onEditorExportRequest(e: EditorEvent<D>) {
+    private _onEditorExportRequestHandle(e: EditorEvent<D>) {
         e.stopPropagation();
 
         this._fireExportEvent();
     }
 
 
-    private _onControllerReady(e: ControllerEvent<D>) {
+    private _onControllerReadyHandle(e: ControllerEvent<D>) {
         e.stopPropagation();
 
-        this._controller = e.detail.controller;
         this._fireReadyEvent();
     }
 
 
-    private _onControllerUpdate(e: ControllerEvent<D>) {
+    private _onControllerUpdateHandle(e: ControllerEvent<D>) {
         e.stopPropagation();
 
         this._data = e.detail.data;
