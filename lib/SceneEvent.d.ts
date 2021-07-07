@@ -3,9 +3,10 @@ import type { SceneElement } from "./SceneElement.js";
 export interface SceneEventHandlersEventMap<D> {
     'scene-ready': SceneEvent<D>;
     'scene-load': SceneEvent<D>;
+    'scene-update': SceneEvent<D>;
     'scene-resize': SceneEvent<D>;
     'scene-change-validity': SceneEvent<D>;
-    'scene-export': SceneEvent<D>;
+    'scene-response': SceneEvent<D>;
 }
 declare global {
     interface GlobalEventHandlersEventMap extends SceneEventHandlersEventMap<any> {

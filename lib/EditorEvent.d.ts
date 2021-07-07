@@ -1,8 +1,7 @@
 import type { IData } from "./IData.js";
 export interface EditorEventHandlersEventMap<D> {
-    'editor-export-request': EditorEvent<D>;
-    'editor-saving-snapshot': EditorEvent<D>;
-    'editor-load-snapshot': EditorEvent<D>;
+    'editor-scene-request': EditorEvent<D>;
+    'editor-controller-request': EditorEvent<D>;
 }
 declare global {
     interface GlobalEventHandlersEventMap extends EditorEventHandlersEventMap<any> {

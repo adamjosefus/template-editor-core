@@ -26,16 +26,14 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
         super.connectedCallback();
 
         window.addEventListener('scene-ready', this._onSceneReadyHandle.bind(this), { once: true });
-        window.addEventListener('editor-saving-snapshot', this._onSavingSnapshotHandle.bind(this), false);
-        window.addEventListener('editor-load-snapshot', this._onLoadSnapshothandle.bind(this), false);
+        window.addEventListener('editor-controller-request', this._onControllerRequestHandle.bind(this), false);
     }
 
 
     disconnectedCallback() {
         super.disconnectedCallback();
 
-        window.removeEventListener('editor-saving-snapshot', this._onSavingSnapshotHandle);
-        window.removeEventListener('editor-load-snapshot', this._onLoadSnapshothandle);
+        window.removeEventListener('editor-controller-request', this._onControllerRequestHandle);
     }
 
 
@@ -52,9 +50,7 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
-    async startup(): Promise<void> {
-        throw new Error(`${this.tagName}: method "startup" is not defined.`);
-    }
+    abstract startup(): Promise<void>;
 
 
     // Methods
@@ -82,14 +78,10 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
-    hasSameDataAs(value: D): boolean {
-        throw new Error(`${this.tagName}: method "hasSameDataAs" is not defined.`);
-    }
+    abstract hasSameDataAs(value: D): boolean;
 
 
-    reflectDataToControls(data: D): void {
-        throw new Error(`${this.tagName}: method "reflectDataToControls" is not defined.`);
-    }
+    abstract reflectDataToControls(data: D): void;
 
 
     isValid(): boolean {
@@ -97,14 +89,10 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
-    isDataValid(data: D): boolean {
-        throw new Error(`${this.tagName}: method "isValid" is not defined.`);
-    }
+    abstract isDataValid(data: D): boolean;
 
 
-    isStructureValid(data: D): boolean {
-        throw new Error(`${this.tagName}: method "isStructureValid" is not defined.`);
-    }
+    abstract isStructureValid(data: D): boolean;
 
 
     // Handles
@@ -119,43 +107,46 @@ export abstract class ControllerElement<D extends IData> extends LitElement {
     }
 
 
-    private _onSavingSnapshotHandle(e: EditorEvent<D>) {
+    private _onControllerRequestHandle(e: EditorEvent<D>) {
         e.stopPropagation();
 
-        this._fireSnapshotDataEvent();
+        this._fireResponseEvent();
     }
 
 
-    private _onLoadSnapshothandle(e: EditorEvent<D>) {
-        e.stopPropagation();
+    // private _onLoadSnapshothandle(e: EditorEvent<D>) {
+    //     e.stopPropagation();
 
-        if (e.detail.data !== null) {
-            this.setData(e.detail.data);
-        }
-    }
+    //     if (e.detail.data !== null) {
+    //         this.setData(e.detail.data);
+    //     }
+    // }
 
 
     // Events
     protected _fireReadyEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-ready', data, this.isDataValid(data));
+        const valid = this.isDataValid(data);
 
+        const event = new ControllerEvent('controller-ready', this, valid);
         this.dispatchEvent(event);
     }
 
 
     protected _fireDataUpdateEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-data-update', data, this.isDataValid(data));
+        const valid = this.isDataValid(data);
 
+        const event = new ControllerEvent('controller-data-update', this, valid);
         this.dispatchEvent(event);
     }
 
 
-    protected _fireSnapshotDataEvent() {
+    protected _fireResponseEvent() {
         const data = this.getData();
-        const event = new ControllerEvent('controller-create-snapshot', data, this.isDataValid(data));
+        const valid = this.isDataValid(data);
 
+        const event = new ControllerEvent('controller-response', this, valid);
         this.dispatchEvent(event);
     }
 }

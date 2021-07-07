@@ -37,7 +37,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
         window.addEventListener('controller-ready', this._onControllerReadyHandle.bind(this), { once: true });
         window.addEventListener('controller-data-update', this._onControllerUpdateHandle.bind(this), false);
-        window.addEventListener('editor-export-request', this._onEditorExportRequestHandle.bind(this), false);
+        window.addEventListener('editor-scene-request', this._onEditorSceneRequestHandle.bind(this), false);
     }
 
 
@@ -45,7 +45,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         super.disconnectedCallback();
 
         window.removeEventListener('controller-data-update', this._onControllerUpdateHandle);
-        window.removeEventListener('editor-export-request', this._onEditorExportRequestHandle);
+        window.removeEventListener('editor-scene-request', this._onEditorSceneRequestHandle);
     }
 
 
@@ -181,9 +181,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     }
 
 
-    isValid(): boolean {
-        throw new Error(`${this.tagName}: method "isValid" is not defined.`);
-    }
+    abstract isValid(): boolean;
 
 
     private _lastValidityState: boolean = false;
@@ -202,16 +200,14 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     }
 
 
-    async getExportData(): Promise<ExportDataType> {
-        throw new Error(`${this.tagName}: Method 'ExportDataType' is not defined.`);
-    }
+    abstract getExportData(): Promise<ExportDataType>;
 
 
     // Handlers
-    private _onEditorExportRequestHandle(e: EditorEvent<D>) {
+    private _onEditorSceneRequestHandle(e: EditorEvent<D>) {
         e.stopPropagation();
 
-        this._fireExportEvent();
+        this._fireResponseEvent();
     }
 
 
@@ -225,7 +221,8 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     private _onControllerUpdateHandle(e: ControllerEvent<D>) {
         e.stopPropagation();
 
-        this._data = { ...e.detail.data };
+        const data = e.detail.controller.getData();
+        this._data = { ...data };
     }
 
 
@@ -241,6 +238,11 @@ export abstract class SceneElement<D extends IData> extends LitElement {
         this.dispatchEvent(event);
     }
 
+    protected _fireUpdateEvent(): void {
+        const event = new SceneEvent('scene-update', this, this.isValid())
+        this.dispatchEvent(event);
+    }
+
 
     private _fireResizeEvent(): void {
         const event = new SceneEvent('scene-resize', this, this.isValid())
@@ -248,14 +250,14 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     }
 
 
-    private _fireExportEvent(): void {
-        const event = new SceneEvent('scene-export', this, this.isValid())
+    private _fireChangeValidityEvent(): void {
+        const event = new SceneEvent('scene-change-validity', this, this.isValid())
         this.dispatchEvent(event);
     }
 
 
-    private _fireChangeValidityEvent(): void {
-        const event = new SceneEvent('scene-change-validity', this, this.isValid())
+    private _fireResponseEvent(): void {
+        const event = new SceneEvent('scene-response', this, this.isValid())
         this.dispatchEvent(event);
     }
 

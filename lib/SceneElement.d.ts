@@ -29,18 +29,19 @@ export declare abstract class SceneElement<D extends IData> extends LitElement {
     private _data;
     getData(): D;
     hasData(): boolean;
-    isValid(): boolean;
+    abstract isValid(): boolean;
     private _lastValidityState;
     setValidityState(valid: boolean): void;
     private _isReadyToggle;
     isReady(): boolean;
-    getExportData(): Promise<ExportDataType>;
-    private _onEditorExportRequestHandle;
+    abstract getExportData(): Promise<ExportDataType>;
+    private _onEditorSceneRequestHandle;
     private _onControllerReadyHandle;
     private _onControllerUpdateHandle;
     private _fireReadyEvent;
     private _fireLoadEvent;
+    protected _fireUpdateEvent(): void;
     private _fireResizeEvent;
-    private _fireExportEvent;
     private _fireChangeValidityEvent;
+    private _fireResponseEvent;
 }
