@@ -9,19 +9,18 @@ export declare abstract class ControllerElement<D extends IData> extends LitElem
     disconnectedCallback(): void;
     firstUpdated(): void;
     private _startup;
-    startup(): Promise<void>;
+    abstract startup(): Promise<void>;
     isReady(): boolean;
     getData(): D;
     setData(data: D): void;
-    hasSameDataAs(value: D): boolean;
-    reflectDataToControls(data: D): void;
+    abstract hasSameDataAs(value: D): boolean;
+    abstract reflectDataToControls(data: D): void;
     isValid(): boolean;
-    isDataValid(data: D): boolean;
-    isStructureValid(data: D): boolean;
+    abstract isDataValid(data: D): boolean;
+    abstract isStructureValid(data: D): boolean;
     private _onSceneReadyHandle;
-    private _onSavingSnapshotHandle;
-    private _onLoadSnapshothandle;
+    private _onControllerRequestHandle;
     protected _fireReadyEvent(): void;
     protected _fireDataUpdateEvent(): void;
-    protected _fireSnapshotDataEvent(): void;
+    protected _fireResponseEvent(): void;
 }
