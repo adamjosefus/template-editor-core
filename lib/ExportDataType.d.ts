@@ -3,12 +3,12 @@ export declare type ExportDataType = {
         /**
          * @deprecated Use 'name' porperty
          */
-        filename: string;
+        filename?: string;
         /**
          * @deprecated Use 'file' porperty
          */
-        dataURL: string;
-        string: string;
+        dataURL?: string;
+        name: string;
         file: File;
     }>;
 };
