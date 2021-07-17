@@ -2,7 +2,7 @@ import { LitElement } from 'lit';
 import { state } from 'lit/decorators.js'
 import { WebFonts as WebFontUtils } from "@templatone/utils";
 import { ControllerEvent } from "./ControllerEvent.js";
-import { updateConfig } from "./ConfigType.js";
+import { processConfig } from "./ConfigType.js";
 import { SceneEvent } from "./SceneEvent.js";
 import { EditorEvent } from './EditorEvent.js';
 import type { ExportDataType } from './ExportDataType.js';
@@ -13,10 +13,10 @@ import type { WeightType as FontWeightType } from "@templatone/utils/lib/WebFont
 
 export abstract class SceneElement<D extends IData> extends LitElement {
 
-    private _templateDataUrl: string | null = null;
-    get templateDataUrl(): string {
-        if (this._templateDataUrl == null) throw new Error("storePath has not been set yet.");
-        return this._templateDataUrl;
+    private _templateRootUrl: string | null = null;
+    get templateRootUrl(): string {
+        if (this._templateRootUrl == null) throw new Error("templateRootUrl has not been set yet.");
+        return this._templateRootUrl;
     }
 
 
@@ -59,7 +59,7 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     private async _load(): Promise<void> {
-        this._templateDataUrl = this.getAttribute('tempalte-data-url')!;
+        this._templateRootUrl = this.getAttribute('tempalte-root-url')!;
 
         await this._loadConfig();
         await this._loadFonts();
@@ -70,12 +70,12 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
 
     private async _loadConfig(): Promise<void> {
-        const path = `${this.templateDataUrl}/config.json`;
+        const path = `${this.templateRootUrl}/config.json`;
 
         const response = await fetch(path);
         const data = await response.json();
 
-        this._config = updateConfig(data);
+        this._config = processConfig(data, this.templateRootUrl);
     }
 
 
@@ -84,12 +84,12 @@ export abstract class SceneElement<D extends IData> extends LitElement {
 
         if (!config.assets.fonts) return;
 
-        const fontCssPath = `${this.templateDataUrl}/fonts.css`;
+        const fontCssPath = `${this.templateRootUrl}/fonts.css`;
 
         const familyDescriptions = WebFontUtils.convertFacesToFamilies(config.assets.fonts.map(f => {
             return {
                 family: f.family,
-                path: f.filename,
+                path: f.file,
                 style: f.italic ? 'italic' : 'normal',
                 weight: f.weight as FontWeightType,
             }
