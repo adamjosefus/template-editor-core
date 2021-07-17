@@ -3,8 +3,8 @@ import type { ExportDataType } from './ExportDataType.js';
 import type { ConfigType } from "./ConfigType.js";
 import type { IData } from './IData.js';
 export declare abstract class SceneElement<D extends IData> extends LitElement {
-    private _templateDataUrl;
-    get templateDataUrl(): string;
+    private _templateRootUrl;
+    get templateRootUrl(): string;
     constructor(width: number | {
         (): number;
     }, height: number | {
