@@ -11,30 +11,6 @@ export function processConfig(schema: ConfigScemaType, templateRootUrl: string):
     }
 
 
-    function upgrade1to2(schema: ConfigSchema_v1): ConfigSchema_v2 {
-        return {
-            configType: 2,
-            main: schema.main,
-            preview: schema.preview ?? null,
-            assets: {
-                fonts: (schema.assets.fonts ?? []).map(f => {
-                    return {
-                        family: f.family,
-                        file: f.filename,
-                        weight: f.weight,
-                        italic: f.italic
-                    }
-                })
-            }
-        }
-    }
-
-
-    if (schema.configType === 1) {
-        schema = upgrade1to2(schema);
-    }
-
-
     return {
         main: schema.main,
         preview: schema.preview ?? null,
@@ -70,12 +46,7 @@ export type ConfigType = {
 };
 
 
-
-export type ConfigScemaType = ConfigSchema_v2 | ConfigSchema_v1;
-
-
-interface ConfigSchema_v2 extends ConfigOriginType {
-    configType: 2,
+interface ConfigScemaType {
     main: string,
     preview?: string | null,
     assets?: {
@@ -86,24 +57,4 @@ interface ConfigSchema_v2 extends ConfigOriginType {
             italic?: boolean
         }[]
     }
-}
-
-
-interface ConfigSchema_v1 extends ConfigOriginType {
-    configType: 1,
-    main: string,
-    preview?: string,
-    assets: {
-        fonts?: {
-            family: string,
-            filename: string,
-            weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900,
-            italic: boolean
-        }[]
-    }
-}
-
-
-interface ConfigOriginType {
-    configType: number,
 }

@@ -12,9 +12,7 @@ export declare type ConfigType = {
         }[];
     };
 };
-export declare type ConfigScemaType = ConfigSchema_v2 | ConfigSchema_v1;
-interface ConfigSchema_v2 extends ConfigOriginType {
-    configType: 2;
+interface ConfigScemaType {
     main: string;
     preview?: string | null;
     assets?: {
@@ -25,21 +23,5 @@ interface ConfigSchema_v2 extends ConfigOriginType {
             italic?: boolean;
         }[];
     };
-}
-interface ConfigSchema_v1 extends ConfigOriginType {
-    configType: 1;
-    main: string;
-    preview?: string;
-    assets: {
-        fonts?: {
-            family: string;
-            filename: string;
-            weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
-            italic: boolean;
-        }[];
-    };
-}
-interface ConfigOriginType {
-    configType: number;
 }
 export {};
