@@ -7,26 +7,34 @@ export function processConfig(schema: ConfigScemaType, templateRootUrl: string):
         if (path.startsWith('.')) path.replace('.', '');
         if (path.startsWith('/')) path.replace('/', '');
 
-        return path
+        return path;
     }
 
 
     return {
         main: schema.main,
         preview: schema.preview ?? null,
-        assets: {
-            fonts: ((arr) => arr.map(font => {
-                const file = clearPath(font.file);
+        fonts: ((arr) => arr.map(font => {
+            const file = clearPath(font.file);
 
-                return {
-                    family: font.family,
-                    file: file,
-                    url: `${templateRootUrl}/${file}`,
-                    weight: font.weight ?? 400,
-                    italic: font.italic ?? false,
-                }
-            }))(schema.assets?.fonts ?? []),
-        }
+            return {
+                id: font.id ?? null,
+                family: font.family,
+                file: file,
+                url: `${templateRootUrl}/${file}`,
+                weight: font.weight ?? 400,
+                italic: font.italic ?? false,
+            }
+        }))(schema.fonts ?? []),
+        assets: ((arr) => arr.map(font => {
+            const file = clearPath(font.file);
+
+            return {
+                id: font.id ?? null,
+                file: file,
+                url: `${templateRootUrl}/${file}`,
+            }
+        }))(schema.assets ?? []),
     };
 }
 
@@ -34,27 +42,35 @@ export function processConfig(schema: ConfigScemaType, templateRootUrl: string):
 export type ConfigType = {
     main: string,
     preview: string | null,
-    assets: {
-        fonts: {
-            family: string,
-            file: string,
-            url: string,
-            weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900,
-            italic: boolean
-        }[]
-    }
+    fonts?: {
+        id: string | null,
+        family: string,
+        file: string,
+        url: string,
+        weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900,
+        italic: boolean
+    }[],
+    assets?: {
+        id: string | null,
+        file: string,
+        url: string,
+    }[],
 };
 
 
 interface ConfigScemaType {
+    doctype: number,
     main: string,
     preview?: string | null,
+    fonts?: {
+        id?: string | null,
+        family: string,
+        file: string,
+        weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900,
+        italic?: boolean
+    }[]
     assets?: {
-        fonts?: {
-            family: string,
-            file: string,
-            weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900,
-            italic?: boolean
-        }[]
-    }
+        id?: string | null,
+        file: string,
+    }[]
 }
