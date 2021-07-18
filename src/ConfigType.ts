@@ -42,7 +42,7 @@ export function processConfig(schema: ConfigScemaType, templateRootUrl: string):
 export type ConfigType = {
     main: string,
     preview: string | null,
-    fonts?: {
+    fonts: {
         id: string | null,
         family: string,
         file: string,
@@ -50,7 +50,7 @@ export type ConfigType = {
         weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900,
         italic: boolean
     }[],
-    assets?: {
+    assets: {
         id: string | null,
         file: string,
         url: string,
