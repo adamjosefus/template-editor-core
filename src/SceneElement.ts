@@ -82,11 +82,11 @@ export abstract class SceneElement<D extends IData> extends LitElement {
     private async _loadFonts(): Promise<void> {
         const config = this.getConfig();
 
-        if (!config.assets.fonts) return;
+        if (!config.fonts) return;
 
         const fontCssPath = `${this.templateRootUrl}/fonts.css`;
 
-        const familyDescriptions = WebFontUtils.convertFacesToFamilies(config.assets.fonts.map(f => {
+        const familyDescriptions = WebFontUtils.convertFacesToFamilies(config.fonts.map(f => {
             return {
                 family: f.family,
                 path: f.file,
