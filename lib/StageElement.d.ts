@@ -5,5 +5,5 @@ export declare class StageElement<D extends IData> extends LitElement {
     connectedCallback(): void;
     disconnectedCallback(): void;
     render(): import("lit-html").TemplateResult<1>;
-    static styles: import("lit").CSSResultGroup;
+    static styles: import("lit").CSSResult;
 }
